@@ -28,11 +28,12 @@ export default {
       this.$emit("toggle", this.navbar);
     },
     logout() {
+      localStorage.clear();
       this.$router.replace(`/login`);
       var auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(() => {
         console.log("User signed out.w");
-        localStorage.clear();
+        
       });
     },
     changeState(state) {

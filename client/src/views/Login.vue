@@ -60,7 +60,7 @@ export default {
           for (const key in result.data) {
             localStorage[key] = result.data[key];
           }
-          this.$router.replace("/shop");
+          this.$router.replace("/");
         })
         .catch(err => {
           this.fail = true;

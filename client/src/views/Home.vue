@@ -128,6 +128,10 @@ export default {
     this.state = "home";
   },
   beforeCreate() {
+    if (!localStorage.token) {
+      this.$router.replace(`/login`)
+    }
+
     a.get("/products", {
       headers: {
         token: localStorage.token
