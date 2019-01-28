@@ -2,8 +2,8 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <ProductList :productList="productList"></ProductList>
-    <router-view/>
+    <ProductList :products="productList" :host="host" @getCarts="getCarts"></ProductList>
+    <router-view />
   </div>
 </template>
 
@@ -14,10 +14,15 @@ import ProductList from '@/components/ProductList.vue'
 
 export default {
   name: 'home',
-  props:['productList'],
+  props:['productList', 'host'],
   data() {
     return {
 
+    }
+  },
+  methods: {
+    getCarts() {
+      this.$emit("getCarts")
     }
   },
   components: {

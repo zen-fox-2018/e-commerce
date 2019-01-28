@@ -28,13 +28,40 @@
           <div class="totals-value" id="cart-total">{{ history.totalPrice }}</div>
         </div>
       </div>
+      <button type="button" class="btn btn-primary" id="buttonCheckout" @click.prevent="delivered(history._id)">Delivered</button>
     </div> 
   </div>
 </template>
 
 <script>
-export default {
+import axios from 'axios'
 
+export default {
+  name: 'history',
+  props:['host', 'historyList'],
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    delivered(id) {
+      axios({
+        method: "PUT",
+        url: `${this.host}/carts/arrived/${id}`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })   
+        .then(response => {
+          console.log('You have confirmed that your package has arrived')
+          this.$emit("history")
+        })
+        .catch(err => {
+          console.log(err.response)
+        }) 
+    },
+  },
 }
 </script>
 

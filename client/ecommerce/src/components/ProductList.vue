@@ -1,33 +1,77 @@
 <template>
-  <div class="featured-product">
-    <img v-bind:src="productItem.imageUrl">
-    <p>
-      {{productItem.name}}<br>
-      {{productItem.description}}<br>
-      <span class="price">${{productItem.price}}</span>
-      <a href="#" @click="addCart(productItem)"><span class="cart">+<i class="fa fa-shopping-cart"></i></span></a><br>
-    </p>
+  <div class="main-content-cat">
+    <div class="col-md-10">
+      <div class="category-container">
+        <div class="row">
+          <div class="col-md-4"  v-for="(productItem) in products" :key="productItem._id">
+            <div class="featured-product">
+              <img v-bind:src="productItem.imageUrl">
+              <p>
+                {{productItem.name}}<br>
+                {{productItem.description}}<br>
+                <span class="price">${{productItem.price}}</span>
+                <a href="#" @click="addCart(productItem)"><span class="cart">+<i class="fa fa-shopping-cart"></i></span></a><br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'ProductList',
-  props:['productList'],
+  props:['products', 'host'],
   data() {
     return {
     }
   },
   methods: {
-    addToCart(item) {
-      console.log("add to cart")
-      console.log(item)
+    addCart(param){
+      if(!localStorage.getItem("cartId")){
+        axios({
+          method: "POST",
+          url: `${this.host}/carts`,
+          headers: {
+            token: localStorage.getItem("token")
+          }
+        })
+          .then(response => {
+            localStorage.setItem("cartId", response.data._id)
+          })
+          .then(() => {
+            this.updateInc(param)
+          })
+          .catch(err => {
+            console.log(err.response);
+          })
+      } else {
+        this.updateInc(param)
+      }
     },
-    itemDetail(item) {
-      console.log('item detail');
-      console.log(item);
-      // this.$router.push(`/detail/${item._id}`) 
-    }
+    updateInc(param) {
+      axios({
+        method: "PUT",
+        url: `${this.host}/carts/inc/${localStorage.getItem("cartId")}`,
+        headers: {
+          token: localStorage.getItem("token")
+        },
+        data: {
+          itemId: param._id,
+          increasePrice: param.price
+        }
+      })
+        .then(result => {
+          this.$emit("getCarts")
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
   },
   created() {
   },

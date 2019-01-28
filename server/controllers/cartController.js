@@ -3,17 +3,30 @@ const Product = require('../models/Product')
 
 class CartController {
     static createCart(req, res) {
-        let cart = new Cart({
-            cartItems: [],
-            userId: req.decoded._id
+        Cart.find({
+            userId: req.decoded._id,
+            statusCheckOut: 'undone'
         })
-        cart.save()
-            .then(result => {
-                res.status(200).json(result)
-            })
-            .catch(err => {
-                res.status(400).json(err.message)
-            })
+        .then( (result) => {
+            if(!result[0] ) {
+                let cart = new Cart({
+                    cartItems: [],
+                    userId: req.decoded._id
+                })
+                cart.save()
+                    .then(result => {
+                        res.status(201).json(result)
+                    })
+                    .catch(err => {
+                        res.status(400).json(err.message)
+                    })
+            } else {
+                res.status(200).json(result[0])
+            }
+        })
+        .catch(err => {
+            res.status(400).json(err.message)
+        })
     }
 
     static readCart(req, res) {
@@ -158,7 +171,7 @@ class CartController {
             _id: req.params.id,
             userId: req.decoded._id
         }, {
-            statusCheckOut: "on delivery",
+            statusCheckOut: "undelivered",
             totalPrice: req.body.grandTotal
         })
         .then(result => { 

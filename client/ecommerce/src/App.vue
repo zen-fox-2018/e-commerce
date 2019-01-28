@@ -1,36 +1,20 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <navbar :token="token" :host="host" @resettoken="token = $event"></navbar>
-       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active" v-if="!token">
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#registermodal">Sign Up</a>
-          </li>
-          <li class="nav-item active" v-if="!token">
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#loginmodal">Login</a>
-          </li>
-          <li class="nav-item active" v-if="token">
-            <a href="#">Logout</a>
-          </li>
-        </ul>
-      </div>
-      <Register :host="host"></Register>
-      <Login @resettoken="token = $event" :host="host"></Login>
+      <router-link to="/" :productList="productList" @getCarts="getCarts">Home</router-link> |
+      <router-link to="/register" v-if="!token"> Register | </router-link> 
+      <router-link to="/login" @resettoken="token = $event" v-if="!token"> Login | </router-link> 
+      <a href="#" @click.prevent="logout()" v-if="token">Logout |</a>     
 
-      <router-link to="/cart">Cart</router-link> |
-      <router-link to="/history">History</router-link> |
-      <!-- <router-link to="/cart">Cart</router-link> -->
+      <router-link to="/cart" v-if="token">Cart |</router-link> 
+      <router-link to="/history" v-if="token"> History |</router-link> 
     </div>
-    <router-view :productList="productList" />
+    <router-view :productList="productList" :cartList="cartList" :historyList="historyList" :host="host" @getCarts="getCarts" @history="history"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Register from '@/components/Register.vue'
-import Login from '@/components/Login.vue'
 
 export default {
   name: 'Main',
@@ -38,18 +22,19 @@ export default {
     return {
       host: "http://localhost:3000",
       shownError: "",
-      localStorageToken: localStorage.getItem("token"),
-      productList: []
+      token: localStorage.getItem("token"),
+      productList: [],
+      cartList: [],
+      grandTotal: 0,
+      historyList: [],
     }
   },
   components: {
-    Register,
-    Login
   },
   methods: {
-    removeToken() {
+    logout() {
       localStorage.clear()
-      this.localStorageToken = ""
+      this.token = "" 
     },
     getAllProduct () {
       axios({
@@ -63,142 +48,30 @@ export default {
           console.log(err)
         })
     },
-    addCart(param){
-      if(!localStorage.getItem("cartId")){
-          axios({
-            method: "POST",
-            url: `${this.host}/carts`,
-            headers: {
-              token: localStorage.getItem("token")
-            }
-          })
-          .then(response => {
-            localStorage.setItem("cartId", response.data._id)
-          })
-          .then(() => {
-            this.updateInc(param)
-          })
-          .catch(err => {
-            console.log(err.response);
-          })
-      } else {
-        this.updateInc(param)
-      }
-    },
-    updateInc(param) {
-      axios({
-        method: "PUT",
-        url: `${this.host}/carts/inc/${localStorage.getItem("cartId")}`,
-        headers: {
-          token: localStorage.getItem("token")
-        },
-        data: {
-          itemId: param._id,
-          increasePrice: param.price
-        }
-      })
-        .then(result => {
-          this.getCarts()
-        })
-        .catch(err => {
-          console.log(err.response)
-        })
-    },
-  updateCart(param) {
-    axios({
-      method: "PUT",
-      url: `${this.host}/carts/${localStorage.getItem("cartId")}`,
-      data: {
-        itemId: param._id._id,
-        quantity: Number(param.quantity),
-        subTotal: ( Number(param.quantity) * Number(param._id.price) )
-      },
-      headers: {
-        token: localStorage.getItem("token")
-      }
-    })
-      .then(result => {
-        this.getCarts()
-      })
-      .catch(err => {
-        console.log(err.response)
-      })
-  },
-  getCarts() {
-    axios({
-      method: "GET",
-      url: `${this.host}/carts/undone`,
-      headers: {
-        token: localStorage.getItem("token")
-      }
-    })
-      .then((response) => {
-        this.cartList = response.data[0]
-        var grandTotal = 0
-        response.data[0].cartItems.forEach(item => {
-          grandTotal += item.subTotal
-        })
-        this.grandTotal = grandTotal
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  },
-  deleteCartItem(param) {
-    axios({
-      method: "PUT",
-      url: `${this.host}/carts/del/${localStorage.getItem("cartId")}`,
-      data: {
-        itemId: param._id._id
-      },
-      headers: {
-        token: localStorage.getItem("token")
-      }
-    })
-      .then((response) => {
-        this.getCarts()
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  },
-  checkOut() {
-      axios({
-        method: "PUT",
-        url: `${this.host}/carts/checkout/${localStorage.getItem("cartId")}`,
-        data: {
-          grandTotal: this.grandTotal
-        },
-        headers: {
-          token: localStorage.getItem("token")
-        }
-      })
-      .then(result => {
-        localStorage.removeItem("cartId")
-        axios({
-          method: "POST",
-          url: `${this.host}/carts`,
-          headers: {
-            token: localStorage.getItem("token")
-          }
-        })
-        .then(response => {
-          localStorage.setItem("cartId", response.data._id)
-          this.getCarts()
-          this.history()
-        })
-        .catch(err => {
-          console.log(err.response)
-        })
-      })
-      .catch(err => {
-        console.log(err.response)
-      })
-  },
-  history(){
+    getCarts() {
       axios({
         method: "GET",
-        url: `${this.host}/carts/done`,
+        url: `${this.host}/carts/undone`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then((response) => {
+          this.cartList = response.data[0]
+          var grandTotal = 0
+          response.data[0].cartItems.forEach(item => {
+            grandTotal += item.subTotal
+          })
+          this.grandTotal = grandTotal
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    history(){
+      axios({
+        method: "GET",
+        url: `${this.host}/carts/undelivered`,
         headers: {
           token: localStorage.getItem("token")
         }
@@ -209,15 +82,15 @@ export default {
       .catch((error) => {
         console.log(error.response);
       });
-  }
+    },
   },
   mounted () {
     this.getAllProduct()
-    if(localStorage.getItem("token")) {
+    if(localStorage.getItem('token')) {
       this.getCarts()
       this.history()
     }
-  }
+  },
 }
 </script>
 

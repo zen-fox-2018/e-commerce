@@ -29,20 +29,100 @@
       </div>
       
       <div class="totals">
-          <div class="totals-item totals-item-total">
-              <label>Grand Total</label>
-              <div class="totals-value" id="cart-total">{{grandTotal}}</div>
-          </div>
+        <div class="totals-item totals-item-total">
+          <label>Grand Total</label>
+          <div class="totals-value" id="cart-total">{{grandTotal}}</div>
+        </div>
       </div>
+      <button type="button" class="btn btn-primary" id="buttonCheckout" @click.prevent="checkOut()">Checkout</button>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+  name: 'cart',
+  props:['host', 'cartList', 'grandTotal'],
   data() {
     return {
-      cartList: []
+      
     }
+  },
+  methods: {
+    updateCart(param) {
+      axios({
+        method: "PUT",
+        url: `${this.host}/carts/${localStorage.getItem("cartId")}`,
+        data: {
+          itemId: param._id._id,
+          quantity: Number(param.quantity),
+          subTotal: ( Number(param.quantity) * Number(param._id.price) )
+        },
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(result => {
+          this.$emit("getCarts")
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
+    deleteCartItem(param) {
+      axios({
+        method: "DELETE",
+        url: `${this.host}/carts/del/${localStorage.getItem("cartId")}`,
+        data: {
+          itemId: param._id._id
+        },
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then((response) => {
+          this.$emit("getCarts")
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    checkOut() {
+      axios({
+        method: "PUT",
+        url: `${this.host}/carts/checkout/${localStorage.getItem("cartId")}`,
+        data: {
+          grandTotal: this.grandTotal
+        },
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+        .then(result => {
+          localStorage.removeItem("cartId")
+          axios({
+            method: "POST",
+            url: `${this.host}` +`/carts`,
+            headers: {
+              token: localStorage.getItem("token")
+            }
+          })
+            .then(({data}) => {
+              console.log(data)
+              localStorage.setItem("cartId", data._id)
+              window.location.reload()
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
+  },
+  created() {
   }
 }
 </script>

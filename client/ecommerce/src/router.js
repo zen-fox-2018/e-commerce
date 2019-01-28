@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Home from './views/Home.vue'
+import Home from './views/Home.vue'
 import ProductList from './components/ProductList.vue'
 
 Vue.use(Router)
@@ -10,11 +10,21 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: ProductList,
+      component: Home,
       // children:[{
       //   path: '/',
       //   component: () => import(/* webpackChunkName: "about" */ './components/ProductList.vue')
       // }]
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import(/* webpackChunkName: "about" */ './components/Register.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "about" */ './components/Login.vue')
     },
     {
       path: '/cart',

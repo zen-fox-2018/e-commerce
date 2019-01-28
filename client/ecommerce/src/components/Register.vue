@@ -1,44 +1,30 @@
 <template>
-    <div class="modal fade" id="registermodal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body"> 
-                    <div class="grid">    
-                        <form method="post" class="form login" onsubmit="return false">             
-                            <div class="form__field">
-                                <label for="email"><i class="fa fa-envelope" style="color: #fff"></i><span class="hidden">Email</span></label>
-                                <input type="email" name="email" v-model="inputRegister.email" placeholder="email" class="form__input" required>
-                            </div>                
-                            <div class="form__field">
-                                <label for="password"><i class="fa fa-lock" style="color: #fff"></i><span class="hidden">Password</span></label>
-                                <input type="password" name="password" v-model="inputRegister.password" class="form__input" placeholder="password" required>
-                            </div>                
-                            <div class="form__field">
-                                <button id="buttonRegisterSubmit" data-dismiss="modal" v-on:click.prevent="register()">REGISTER</button>
-                            </div>                    
-                        </form>        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="container-fluid">    
+        <form method="post" class="form login" onsubmit="return false">             
+            <div class="form__field">
+                <label for="email"><i class="fa fa-envelope" style="color: #fff"></i><span class="hidden">Email</span></label>
+                <input type="email" name="email" v-model="inputRegister.email" placeholder="email" class="form__input" required>
+            </div>                
+            <div class="form__field">
+                <label for="password"><i class="fa fa-lock" style="color: #fff"></i><span class="hidden">Password</span></label>
+                <input type="password" name="password" v-model="inputRegister.password" class="form__input" placeholder="password" required>
+            </div>                
+            <div class="form__field">
+                <button id="buttonRegisterSubmit" data-dismiss="modal" v-on:click.prevent="register()">REGISTER</button>
+            </div>                    
+        </form>        
+    </div>                
 </template>
 
 <script>
-export default {
-    
+import axios from 'axios'
+
+export default {    
     data() {
         return {
             inputRegister: {
-            name: "",
-            email: "",
-            password: ""
+                email: "",
+                password: ""
             },
         }
     },
