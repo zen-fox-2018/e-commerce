@@ -3,7 +3,7 @@ const { Storage } = require('@google-cloud/storage')
 
 const storage = new Storage({
   projectId: process.env.GCLOUD_PROJECT,
-  keyFilename: './mini-wp-mochfamir-f27d1dbeaa30.json'
+  keyFilename: './keyfile.json'
 })
 
 const bucketName = process.env.CLOUD_BUCKET
