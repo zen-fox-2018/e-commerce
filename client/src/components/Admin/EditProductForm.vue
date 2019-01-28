@@ -3,17 +3,17 @@
     <b-form>
       <div class="form-group">
         <label for="recipient-name" class="col-form-label">Name: </label>
-        <input type="email" class="form-control" :value='product.name'>
+        <input type="email" class="form-control" v-model='product.name'>
         <label for="message-text" class="col-form-label">Price:</label>
-        <input type="text" class="form-control" :value='product.price'>
+        <input type="text" class="form-control" v-model='product.price'>
         <label for="message-text" class="col-form-label">Stock:</label>
-        <input type="text" class="form-control" :value='product.stock'>
+        <input type="text" class="form-control" v-model='product.stock'>
         <label for="message-text" class="col-form-label">Category:</label>
         <div>
           <b-form-select v-model="product.category" :options="options" class="mb-3" />
         </div>
         <label for="message-text" class="col-form-label">Description:</label>
-        <input type="text" class="form-control" :value='product.description'>
+        <input type="text" class="form-control" v-model='product.description'>
         <label for="message-text" class="col-form-label">Image: </label>
         <input class="form-control" type="file" name="file" @change='imagefile'>
       </div>

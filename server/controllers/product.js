@@ -3,6 +3,7 @@ const Product = require('../models/Product')
 module.exports = {
   create(req, res) {
     console.log('masuk controller create')
+    console.log(req.body)
     let { name, description, price, stock, category } = JSON.parse(req.body.data)
     let newProduct = { name, description, price, stock, category }
     newProduct.userId  = req.current_user._id
@@ -114,6 +115,8 @@ module.exports = {
 
   edit(req,res){
     console.log('masuk controller edit')
+    console.log(req.body)
+    console.log(req.params.productId)
     let productId = req.params.productId
     let editProduct = { name, description, price, stock, category } = JSON.parse(req.body.data)
 

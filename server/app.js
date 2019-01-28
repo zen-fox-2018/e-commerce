@@ -5,26 +5,26 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 
 const status = process.env.NODE_ENV
-// mongoose.connect(`mongodb://localhost:27017/ZenFox-Ecommerce-${status}`)
+mongoose.connect(`mongodb://localhost:27017/ZenFox-Ecommerce-${status}`)
 
 //---------------------------------CONNECT MLAB DATABASE---------------------------------------
-const mongodbUri = 'mongodb://anharaf:anhar1234@ds259865.mlab.com:59865/zenfox-ecommerce'
-const port = process.env.PORT || 3000
+// const mongodbUri = 'mongodb://anharaf:anhar1234@ds259865.mlab.com:59865/zenfox-ecommerce'
+// // const port = process.env.PORT || 3000
 
-//connect mongoose
-mongoose.connect(mongodbUri,
-  {
-    useNewUrlParser: true,
-    auth: {
-      user: 'anharaf',
-      password: 'anhar1234'
-    }
-  });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log(('You are Mongected'));
-});
+// //connect mongoose
+// mongoose.connect(mongodbUri,
+//   {
+//     useNewUrlParser: true,
+//     auth: {
+//       user: 'anharaf',
+//       password: 'anhar1234'
+//     }
+//   });
+// // const db = mongoose.connection;
+// // db.on('error', console.error.bind(console, 'connection error:'));
+// // db.once('open', function() {
+// //   console.log(('You are Mongected'));
+// // });
 //------------------------------------------------------------------------------
 
 
