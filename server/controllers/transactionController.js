@@ -3,7 +3,7 @@ const Transaction = require('../models/transaction');
 module.exports = {
   read: async (req, res) => {
     try {
-      let transaction = await Transaction.find()
+      let transaction = await Transaction.find().populate('products').populate('user').exec()
       res.status(200).json(transaction)
     } catch (err) {
       res.status(500).json({
@@ -15,7 +15,7 @@ module.exports = {
     try {
       let transaction = await Transaction.find({
         user: req.decoded._id
-      })
+      }).populate('products').populate('user').exec()
       res.status(200).json(transaction)
     } catch (err) {
       res.status(500).json({

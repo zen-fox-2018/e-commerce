@@ -11,6 +11,14 @@
 
     <v-spacer></v-spacer>
 
+    <v-btn
+      flat
+      @click="mypage()"
+      v-if="isLogin"
+    >
+      MyPage
+    </v-btn>
+
     <v-menu
       bottom
       origin="center center"
@@ -25,6 +33,7 @@
       >
         <v-icon>shopping_cart</v-icon>
       </v-btn>
+
 
       <v-list>
         <v-list-tile
@@ -141,6 +150,9 @@ export default {
         console.error(response)
         swal('Internal server error', 'error')
       }
+    },
+    mypage: function () {
+      this.$router.push('/mypage')
     }
   },
   watch: {

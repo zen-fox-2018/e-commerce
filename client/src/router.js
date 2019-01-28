@@ -17,12 +17,16 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: () => import(/* webpackChunkName: "login" */ './views/login-page')
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import(/* webpackChunkName: "admin" */ './views/admin')
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: () => import(/* webpackChunkName: "mypage" */ './views/mypage')
     }
   ]
 })
-
-// {
-//   path: '/about',
-//   name: 'about',
-//   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-// }

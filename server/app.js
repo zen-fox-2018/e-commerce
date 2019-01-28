@@ -15,6 +15,7 @@ db.once('open', function() {
 var usersRouter = require('./routes/users');
 const productRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
+const transactionRoute = require('./routes/transaction')
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use(cors());
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/cart', cartRouter);
+app.use('/transaction', transactionRoute);
 
 app.use('*', (req, res) => {
   res.status(404).json({
