@@ -1,0 +1,55 @@
+const User = require('../models/user')
+const {compare, sign, verify} = require('../helpers/index')
+
+module.exports = {
+    login : function(req, res){
+        User.findOne({email: req.body.email})
+        .then(user =>{
+            if(user){
+                if(compare(req.body.password, user.password)){
+                    var token = sign({
+                        email : user.email
+                    })
+                    res.status(200).json({
+                        message: 'Login success',
+                        token
+                    })
+                }else{
+                    res.status(401).json({
+                        message: 'Email/password is wrong'
+                    })
+                }
+            }else{
+                res.status(401).json({
+                    message: 'Email/password is wrong'
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: err
+            })
+        })
+    },
+    register : function(req, res){
+        User.create({
+            email: req.body.email,
+            password : req.body.password,
+            firstName: req.body.firstName,
+            lastName : req.body.lastName
+        })
+        .then(user =>{
+            res.status(201).json({
+                    data: user,
+                    message: 'User created'
+            })
+        })
+        .catch(err =>{
+            res.status(400).json({
+                    error: err,
+                    message: 'Internal server error'
+            })
+        })
+    }
+}
