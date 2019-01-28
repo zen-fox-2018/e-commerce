@@ -59,7 +59,7 @@ export default {
     getMyTransaction: function () {
       this.$axios({
         method: `GET`,
-        url: `${url}/transactions/mine/lists`,
+        url: `/transactions/mine/lists`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -75,7 +75,7 @@ export default {
     confirmStatus: function (id) {
       this.$axios({
         method: `PUT`,
-        url: `${url}/transactions/${id}`,
+        url: `/transactions/${id}`,
         headers: {
           token: localStorage.getItem('token')
         }

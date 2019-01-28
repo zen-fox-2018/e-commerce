@@ -184,7 +184,7 @@ export default {
     checkUser: function () {
       this.$axios({
         method: `GET`,
-        url: `${url}/users`,
+        url: `/users`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -208,7 +208,7 @@ export default {
     getProducts: function () {
       this.$axios({
         method: `GET`,
-        url: `${url}/products`
+        url: `/products`
       })
       .then(({ data }) => {
         this.loading(data)
@@ -221,7 +221,7 @@ export default {
     getCart: function () {
       this.$axios({
         method: `GET`,
-        url: `${url}/carts`,
+        url: `/carts`,
         headers: {
           token: localStorage.getItem('token')
         }

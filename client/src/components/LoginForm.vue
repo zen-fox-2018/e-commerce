@@ -73,7 +73,7 @@ export default {
     login () {
       this.$axios({
         method: `POST`,
-        url: `${url}/users/login`,
+        url: `/users/login`,
         data: {
           email: this.email,
           password: this.password

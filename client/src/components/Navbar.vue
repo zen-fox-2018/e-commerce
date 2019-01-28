@@ -130,7 +130,7 @@ export default {
     removeItem: function (product) {
       this.$axios({
         method: `PUT`,
-        url: `${url}/carts/${product}`,
+        url: `/carts/${product}`,
         headers: {
           token: localStorage.getItem('token')
         }

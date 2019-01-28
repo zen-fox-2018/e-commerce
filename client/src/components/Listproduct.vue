@@ -97,7 +97,7 @@ export default {
     addToCarts: function (product) {
       this.$axios({
         method: `POST`,
-        url: `${url}/carts/${product}`,
+        url: `/carts/${product}`,
         headers: {
           token: localStorage.getItem('token')
         }

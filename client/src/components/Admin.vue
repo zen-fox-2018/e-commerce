@@ -41,7 +41,7 @@ export default {
     getAllConfirmed: function () {
       this.$axios({
         method: `GET`,
-        url: `${url}/transactions/admin`,
+        url: `/transactions/admin`,
         headers: {
           token: localStorage.getItem('token')
         }

@@ -6,7 +6,9 @@ import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios'
 
 Vue.use(Vuetify)
-Vue.prototype.$axios = axios
+Vue.prototype.$axios = axios.create({
+  baseURL: 'https://timecommerce-server.khevin.pro'
+})
 
 Vue.config.productionTip = false
 

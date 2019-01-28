@@ -168,7 +168,7 @@ export default {
     increment: function (product) {
       this.$axios({
         method: `POST`,
-        url: `${url}/carts/${product}`,
+        url: `/carts/${product}`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -197,7 +197,7 @@ export default {
     decrement: function (product) {
       this.$axios({
         method: `PUT`,
-        url: `${url}/carts/${product}`,
+        url: `/carts/${product}`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -214,7 +214,7 @@ export default {
     deleteCart: function () {
       this.$axios({
         method: `DELETE`,
-        url: `${url}/carts`,
+        url: `/carts`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -237,7 +237,7 @@ export default {
     findTransactions: function () {
       this.$axios({
         method: `GET`,
-        url: `${url}/transactions`,
+        url: `/transactions`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -252,7 +252,7 @@ export default {
     checkout: function () {
       this.$axios({
         method: `POST`,
-        url: `${url}/transactions`,
+        url: `/transactions`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -272,7 +272,7 @@ export default {
     deleteCart: function () {
       this.$axios({
         method: `DELETE`,
-        url: `${url}/carts`,
+        url: `/carts`,
         headers: {
           token: localStorage.getItem('token')
         }

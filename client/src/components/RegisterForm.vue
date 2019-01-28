@@ -94,7 +94,7 @@ export default {
       formData.append('avatar', this.avatar)
       this.$axios({
         method: `POST`,
-        url: `${url}/users`,
+        url: `/users`,
         data: formData
       })    
       .then(({ data }) => {
