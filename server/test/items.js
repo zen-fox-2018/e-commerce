@@ -17,27 +17,20 @@ var id_null = "5c435e6a0df11a32e41b0b1h"
 var token_null = "5c435e6a0df11a32e41b0b1h"
 // end
 
+var app = require('../app.js')
+var chai = require('chai')
+var chaiHttp = require('chai-http')
+var expect = chai.expect
+
+chai.use(chaiHttp)
+var Item = require('../models/items')
+var category_id = "5c435e6a0df11a32e41b0b1e"
+var category_id_null = "5c435e6a0df11a32e41b0b1k"
+
+var item_id
+var item_id_null = "5c435e6a0df11a32e41b0b1h"
+
 describe('item backend testing !!!', () => {
-      beforeEach((done) => {
-        let obj = {
-            name: 'user',
-            email: 'user@mail.com',
-            password: '12345'
-        }
-        User.create(obj)
-            .then((tes) => {
-                User.findOne({ _id: tes._id })
-                    .then((result) => {
-                        let obj_user = {
-                            id: result._id,
-                            email: result.email
-                        }
-                        token = create_token(obj_user)
-                        user_id = String(obj_user.id)
-                        done()
-                    })
-            })
-    })
     beforeEach((done) => {
         const obj = {
             title: "barang1",
@@ -56,9 +49,7 @@ describe('item backend testing !!!', () => {
 
     afterEach((done) => {
         Item.remove({}, () => {
-            User.remove({},()=>{
-                done()
-            })
+            done()
         })
     })
 
@@ -78,7 +69,6 @@ describe('item backend testing !!!', () => {
             .request(app)
             .post('/items')
             .send(obj)
-            .set('token', token)
             .end(function (err, res) { 
                 expect(err).to.be.null;
                 expect(res).to.have.status(201);
@@ -222,7 +212,6 @@ describe('item backend testing !!!', () => {
                 expect(res.body.n).to.equal(1);
                 expect(res.body.nModified).to.equal(1);
                 expect(res.body.ok).to.equal(1);
-
 
                 done();
             });
