@@ -25,7 +25,7 @@ export default {
     let self = this;
     axios({
       method:'GET',
-      url:'http://localhost:3000/items/all'
+      url:'http://api.zappos-clone.theodarmawan.com:3000/items/all'
     })
     .then(({data:{items}}) => {
       items.forEach(item => self.items.all.push(item));

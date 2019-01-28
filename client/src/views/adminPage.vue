@@ -88,7 +88,7 @@ export default {
     let self = this;
     function verifyAdmin () {
       axios({
-        url: 'http://localhost:3000/verifyAdmin',
+        url: 'http://api.zappos-clone.theodarmawan.com:3000/verifyAdmin',
         method: 'GET',
         headers: {
           Authorization : localStorage.getItem('token')

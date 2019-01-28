@@ -110,7 +110,7 @@ export default {
     checkOut() {
       let options = {
         method: 'GET',
-        url: 'http://localhost:3000/cart/checkout',
+        url: 'http://api.zappos-clone.theodarmawan.com:3000/cart/checkout',
         headers: {
           authorization: localStorage.getItem('token')
         }

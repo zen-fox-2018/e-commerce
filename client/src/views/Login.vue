@@ -93,7 +93,7 @@
               var accessToken = googleUser.getAuthResponse().id_token;
               axios({
                 method:"POST",
-                url:"http://localhost:3000/users/gsignin",
+                url:"http://api.zappos-clone.theodarmawan.com:3000/users/gsignin",
                 data: {
                   accessToken
                 }
@@ -128,9 +128,9 @@
         onLogin() {
           let self = this;
           if(self.forms.admin == true) {
-            var url ="http://localhost:3000/users/admin"
+            var url ="http://api.zappos-clone.theodarmawan.com:3000/users/admin"
           } else {
-            var url ="http://localhost:3000/users/signin"
+            var url ="http://api.zappos-clone.theodarmawan.com:3000/users/signin"
           };
           let options = {
             method:"POST",
@@ -173,7 +173,7 @@
           let self = this;
           let options = {
             method:"POST",
-            url:"http://localhost:3000/users/signup",
+            url:"http://api.zappos-clone.theodarmawan.com:3000/users/signup",
             data: {
               name: this.forms.name,
               email: this.forms.email,

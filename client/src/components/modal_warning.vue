@@ -34,7 +34,7 @@ export default {
       let self = this;
       axios({
         method:'delete',
-        url: 'http://localhost:3000/cart',
+        url: 'http://api.zappos-clone.theodarmawan.com:3000/cart',
         headers: {
           authorization: localStorage.getItem('token')
         }

@@ -65,7 +65,7 @@ export default {
     let self = this;
     //get transaction history
     let options = {
-      url: 'http://localhost:3000/users/find',
+      url: 'http://api.zappos-clone.theodarmawan.com:3000/users/find',
       method:'GET',
       headers: {
         authorization : localStorage.getItem('token')
@@ -84,7 +84,7 @@ export default {
     markDelivered(cartid) {
       let self = this;
       let options = {
-        url: 'http://localhost:3000/users/history/delivered',
+        url: 'http://api.zappos-clone.theodarmawan.com:3000/users/history/delivered',
         method:'PUT',
         headers: {
           cartid,

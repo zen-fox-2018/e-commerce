@@ -101,7 +101,7 @@ export default {
     let itemId = this.$route.params.itemId;
     axios({
       method:'GET',
-      url:`http://localhost:3000/items/${itemId}`
+      url:`http://api.zappos-clone.theodarmawan.com:3000/items/${itemId}`
     })
     .then(({data:{item}}) => {
       self.item = item;
@@ -146,7 +146,7 @@ export default {
       }
       axios({
         method:'PUT',
-        url: 'http://localhost:3000/cart',
+        url: 'http://api.zappos-clone.theodarmawan.com:3000/cart',
         headers: {
           authorization : token
         },
