@@ -12,7 +12,8 @@ module.exports = {
                     })
                     res.status(200).json({
                         message: 'Login success',
-                        token
+                        token,
+                        userId: user._id
                     })
                 }else{
                     res.status(401).json({
@@ -26,6 +27,7 @@ module.exports = {
             }
         })
         .catch(err => {
+            console.log(err)
             res.status(500).json({
                 message: 'Internal server error',
                 error: err
@@ -46,6 +48,7 @@ module.exports = {
             })
         })
         .catch(err =>{
+            console.log(err)
             res.status(400).json({
                     error: err,
                     message: 'Internal server error'

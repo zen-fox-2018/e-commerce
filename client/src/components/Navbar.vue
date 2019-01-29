@@ -19,171 +19,75 @@
                                 <h5>
                                     <b> Daftar Belanjaan Bray! </b>
                                 </h5>
-                                <div style="overflow:auto; max-height: 18em;">
-                                    <md-card>
-                                        <md-card-header>
-                                            <md-card-header-text>
-                                                <div class="md-subhead">
-                                                    Nama Produk <br>
-                                                    Price : Harga <br>
-                                                    Qty : Jumlah <br>
-                                                    <span style="cursor : pointer;"> <u> remove </u> </span>
-                                                </div>
-                                            </md-card-header-text>
-
-                                            <md-card-media>
-                                                <img src="https://vuematerial.io/assets/examples/avatar-2.jpg" alt="People">
-                                            </md-card-media>
-                                        </md-card-header>
-                                    </md-card>
-                                    <md-card>
-                                        <md-card-header>
-                                            <md-card-header-text>
-                                                <div class="md-subhead">
-                                                    Nama Produk <br>
-                                                    Price : Harga <br>
-                                                    Qty : Jumlah <br>
-                                                    <span style="cursor : pointer;"> <u> remove </u> </span>
-                                                </div>
-                                            </md-card-header-text>
-
-                                            <md-card-media>
-                                                <img src="https://vuematerial.io/assets/examples/avatar-2.jpg" alt="People">
-                                            </md-card-media>
-                                        </md-card-header>
-                                    </md-card>
-                                    <md-card>
-                                        <md-card-header>
-                                            <md-card-header-text>
-                                                <div class="md-subhead">
-                                                    Nama Produk <br>
-                                                    Price : Harga <br>
-                                                    Qty : Jumlah <br>
-                                                    <span style="cursor : pointer;"> <u> remove </u> </span>
-                                                </div>
-                                            </md-card-header-text>
-
-                                            <md-card-media>
-                                                <img src="https://vuematerial.io/assets/examples/avatar-2.jpg" alt="People">
-                                            </md-card-media>
-                                        </md-card-header>
-                                    </md-card>  
-                                </div>
+                                <Cart> </Cart>
+                                <md-button class="md-primary float-right">Checkout <md-icon> payment </md-icon></md-button>
                             </div>
                         </b-dropdown>
                         <b-dropdown right variant="link" size="lg" no-caret>
                             <template slot="button-content">
                             <i class="fas fa-user nav-icon"></i><span class="sr-only">Search</span>
                             </template>
-                            <b-dropdown-item v-b-modal.loginModal href="#">Login </b-dropdown-item>
-                            <b-dropdown-item v-b-modal.registerModal href="#">Register</b-dropdown-item>
+                            <span v-if="isLogin">
+                                <b-dropdown-item href="#">Profile </b-dropdown-item>
+                                <b-dropdown-item @click.prevent="handleLogout"  href="#">Logout </b-dropdown-item>
+                            </span>
+                            <span v-else>
+                                <b-dropdown-item @click.prevent="showLoginModal" v-b-modal.loginModal href="#">Login </b-dropdown-item>
+                                <b-dropdown-item @click.prevent="showRegisterModal" v-b-modal.registerModal href="#">Register</b-dropdown-item>
+                            </span>
                         </b-dropdown>
                     </b-navbar-nav>
                 </b-collapse>
         </b-navbar>
-        <b-modal id="loginModal"
-                    ref="loginModal"
-                    title="Hi! Login yuk"
-                    @shown="clearForm">
-            <form @submit.prevent="handleLogin" id="loginForm">
-                <b-form-input class="my-2"
-                            type="email"
-                            placeholder="Enter your email"
-                            v-model="login.email"
-                            required></b-form-input>
-                <b-form-input class="my-2"
-                            type="password"
-                            placeholder="Enter your password"
-                            v-model="login.password"
-                            required></b-form-input>
-            </form>
-            <div slot="modal-footer" class="w-100">
-                <b-btn class="float-right" variant="primary" @submit.prevent="handleLogin" type="submit" form="loginForm">
-                    Login
-                </b-btn>
-            </div>
-        </b-modal>
-        <b-modal id="registerModal"
-                    ref="registerModal"
-                    title="Hi! Daftar yuk"
-                    @shown="clearForm">
-            <form @submit.prevent="handleRegister" id="registerForm">
-                <b-form-input class="my-2"
-                            type="email"
-                            placeholder="Enter your email"
-                            v-model="register.email"
-                            required></b-form-input>
-                <b-form-input class="my-2"
-                            type="password"
-                            placeholder="Enter your password"
-                            v-model="register.password"
-                            required></b-form-input>
-                <b-form-input class="my-2"
-                            type="text"
-                            placeholder="Enter your first name"
-                            v-model="register.firstName"
-                            required></b-form-input>
-                <b-form-input class="my-2"
-                            type="text"
-                            placeholder="Enter your last name"
-                            v-model="register.lastName"
-                            ></b-form-input>
-            </form>
-            <div slot="modal-footer" class="w-100">
-                <b-btn class="float-right" variant="primary" @submit.prevent="handleRegister" type="submit" form="registerForm">
-                    Register
-                </b-btn>
-            </div>
-        </b-modal>
+        <LoginModal @showModalRegister="showRegisterModal" ref="loginModal"> </LoginModal>
+        <RegisterModal ref="registerModal"> </RegisterModal>
+        <Snackbar> </Snackbar>
     </div>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 import axios from '@/scripts/axios.js'
+import Cart from '@/components/CartNav.vue'
+import LoginModal from '@/components/LoginModal.vue'
+import RegisterModal from '@/components/RegisterModal.vue'
+import Snackbar from '@/components/RegisterSnackbar.vue'
+
 export default {
   name: 'navbar',
+  mounted() {
+      this.checkToken()
+  },
+  components: {
+    LoginModal,
+    RegisterModal,
+    Snackbar,
+    Cart
+  },
   data () {
     return {
-        login: {
-            email: '',
-            password: ''
-        },
-        register: {
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: ''
-        }
+        snackbar: false,
     }
   },
+  computed: {
+    ...mapState([
+        'isLogin'
+    ])
+  },
   methods: {
-    clearForm () {
-      this.login.email = ''
-      this.login.password = ''
-    },
-    handleLogin () {
-        axios.post('/login', this.login)
-        .then(({data}) => {
-            console.log(data,"===========")
-            this.clearForm()
-            this.$refs.loginModal.hide()
-        })
-        .catch(({response :{data}}) => {
-            console.log(data.message)
-        })
-    },
-    handleRegister () {
-        axios.post('/register', this.register)
-        .then(({data}) => {
-            console.log(data,"===========")
-            this.clearForm()
-            this.$refs.registerModal.hide()
-        })
-        .catch(({response :{data}}) => {
-            console.log(data.message)
-        })
-    }
-  }
+      ...mapActions([
+        'checkToken',
+        'doLogout',
+        'showRegisterModal',
+        'showLoginModal'
+      ]),
+      handleLogout(){
+          this.doLogout()
+      },
+      showRegisterModal () {
+          this.$refs.registerModal.show()
+      }
+  },
 }
 </script>
 
