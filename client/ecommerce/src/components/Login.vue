@@ -39,8 +39,9 @@ export default {
               }
             })
             .then(({data}) => {
-              localStorage.setItem("token", data)
-              this.$emit("resettoken", data)
+              localStorage.setItem("role", data.role)
+              localStorage.setItem("token", data.token)
+              this.$emit("resettoken", data.token)
               this.inputLogin.email = ""
               this.inputLogin.password = ""
               this.$router.push('/')

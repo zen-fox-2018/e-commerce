@@ -1,6 +1,5 @@
 <template>
-  <div class="shopping-cart">             
-    <h3>Your package which have not arrived</h3>                     
+  <div class="shopping-cart">                                
     <div class="column-labels" >
       <label class="product-image">Image</label>
       <label class="product-details">Product</label>
@@ -9,8 +8,9 @@
       <label class="product-removal">Remove</label>
       <label class="product-line-price">SubTotal</label>
     </div>  
-    <div v-for="history in historyList" :key="history._id">    
+    <div v-for="history in allHistory" :key="history._id">    
       <div> Transaction ID - {{history._id}}</div>
+      <div> status - {{history.statusCheckOut}}</div>
       <div class="product" v-for="cartItem in history.cartItems" :key="cartItem._id">
         <div class="product-image">
           <img v-bind:src="cartItem._id.imageUrl" >
@@ -29,7 +29,6 @@
           <div class="totals-value" id="cart-total">{{ history.totalPrice }}</div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary" id="buttonCheckout" @click.prevent="delivered(history._id)">Delivered</button>
     </div> 
   </div>
 </template>
@@ -38,30 +37,14 @@
 import axios from 'axios'
 
 export default {
-  name: 'history',
-  props:['host', 'historyList'],
+  name: 'allhistory',
+  props:['host', 'allHistory'],
   data() {
     return {
       
     }
   },
   methods: {
-    delivered(id) {
-      axios({
-        method: "PUT",
-        url: `${this.host}/carts/arrived/${id}`,
-        headers: {
-          token: localStorage.getItem("token")
-        }
-      })   
-        .then(response => {
-          swal('You have confirmed that your package has arrived')
-          this.$emit("history")
-        })
-        .catch(err => {
-          console.log(err.response)
-        }) 
-    },
   },
 }
 </script>

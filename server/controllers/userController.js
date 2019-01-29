@@ -29,8 +29,8 @@ class UserController {
             res.status(400).json({message: "user not found, please register first"})
           } else {
             if (compareCrypt(req.body.password, user.password)){
-              let token = getToken({id: user._id, email:user.email});
-              res.status(200).json(token)
+              let token = getToken({id: user._id, email:user.email, role: user.role});
+              res.status(200).json({ token: token, role: user.role })
             } else {
               res.status(400).json({message: "email or password is incorrect"})
             }                

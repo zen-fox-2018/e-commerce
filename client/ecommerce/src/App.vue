@@ -1,15 +1,16 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/" :productList="productList" @getCarts="getCarts">Home</router-link> |
+      <router-link to="/">Home</router-link> |
       <router-link to="/register" v-if="!token"> Register | </router-link> 
-      <router-link to="/login" @resettoken="token = $event" v-if="!token"> Login | </router-link> 
-      <a href="#" @click.prevent="logout()" v-if="token">Logout |</a>     
+      <router-link to="/login" v-if="!token"> Login | </router-link> 
 
-      <router-link to="/cart" v-if="token">Cart |</router-link> 
+      <router-link to="/transaction" @getCarts="getCarts" @history="history" v-if="token">Transaction |</router-link> 
       <router-link to="/history" v-if="token"> History |</router-link> 
+      <router-link to="/allhistory" v-if="role == 'admin'"> All History |</router-link> 
+      <a href="#" @click.prevent="logout()" v-if="token"> Logout |</a>     
     </div>
-    <router-view :productList="productList" :cartList="cartList" :historyList="historyList" :host="host" @getCarts="getCarts" @history="history"/>
+    <router-view :host="host" :productList="productList" :cartList="cartList" :historyList="historyList" :allHistory="allHistory" @resettoken="token = $event"  @getCarts="getCarts" @history="history"/>
   </div>
 </template>
 
@@ -27,6 +28,8 @@ export default {
       cartList: [],
       grandTotal: 0,
       historyList: [],
+      role: localStorage.getItem('role'),
+      allHistory: []
     }
   },
   components: {
@@ -35,6 +38,8 @@ export default {
     logout() {
       localStorage.clear()
       this.token = "" 
+      this.$router.push('/')
+      window.location.reload()
     },
     getAllProduct () {
       axios({
@@ -83,12 +88,30 @@ export default {
         console.log(error.response);
       });
     },
+    allList(){
+      axios({
+        method: "GET",
+        url: `${this.host}/carts`,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      })
+      .then((response) => {
+        this.allHistory = response.data
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+    },
   },
   mounted () {
     this.getAllProduct()
     if(localStorage.getItem('token')) {
       this.getCarts()
       this.history()
+    }
+    if(this.role == 'admin') {
+      this.allList()
     }
   },
 }

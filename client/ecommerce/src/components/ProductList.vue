@@ -47,6 +47,7 @@ export default {
             this.updateInc(param)
           })
           .catch(err => {
+            swal(err.response.data.message)
             console.log(err.response);
           })
       } else {
@@ -71,6 +72,7 @@ export default {
         })
         .catch(err => {
           console.log(err.response)
+          swal(err.data.message)
         })
     },
   },

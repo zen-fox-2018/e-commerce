@@ -1,5 +1,6 @@
 <template>
-   <div class="shopping-cart">                                
+   <div class="shopping-cart">  
+     <h3>Your On-Going Cart</h3>                   
       <div class="column-labels" >
         <label class="product-image">Image</label>
         <label class="product-details">Product</label>
@@ -71,22 +72,35 @@ export default {
         })
     },
     deleteCartItem(param) {
-      axios({
-        method: "DELETE",
-        url: `${this.host}/carts/del/${localStorage.getItem("cartId")}`,
-        data: {
-          itemId: param._id._id
-        },
-        headers: {
-          token: localStorage.getItem("token")
-        }
+      swal({
+        title: "Are you sure?",
+        text: "You will delete this item from your cart",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
       })
-        .then((response) => {
-          this.$emit("getCarts")
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
+      .then((willDelete) => {
+        if (willDelete) {
+          axios({
+            method: "DELETE",
+            url: `${this.host}/carts/del/${localStorage.getItem("cartId")}`,
+            data: {
+              itemId: param._id._id
+            },
+            headers: {
+              token: localStorage.getItem("token")
+            }
+          })
+            .then((response) => {
+              this.$emit("getCarts")
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        } else {
+          swal("Cancel delete");
+        }
+      });
     },
     checkOut() {
       axios({
@@ -109,8 +123,9 @@ export default {
             }
           })
             .then(({data}) => {
-              console.log(data)
               localStorage.setItem("cartId", data._id)
+              this.$emit("getCarts")
+              this.$emit("history")
               window.location.reload()
             })
             .catch((error) => {

@@ -43,6 +43,7 @@ export default {
               swal("Welcome! You have successfully registering");
               this.inputRegister.email = ""
               this.inputRegister.password = ""
+              this.$router.push('/')
               window.location.reload()
             })
             .catch(err => {

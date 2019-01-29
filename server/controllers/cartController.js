@@ -4,14 +4,14 @@ const Product = require('../models/Product')
 class CartController {
     static createCart(req, res) {
         Cart.find({
-            userId: req.decoded._id,
+            userId: req.decoded.id,
             statusCheckOut: 'undone'
         })
         .then( (result) => {
             if(!result[0] ) {
                 let cart = new Cart({
                     cartItems: [],
-                    userId: req.decoded._id
+                    userId: req.decoded.id
                 })
                 cart.save()
                     .then(result => {
@@ -29,9 +29,20 @@ class CartController {
         })
     }
 
+    static readAllCart(req, res) {
+        Cart.find({})
+        .populate('cartItems._id')
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.status(400).json(err.message)
+        })
+    }
+
     static readCart(req, res) {
         Cart.find({
-            userId: req.decoded._id,
+            userId: req.decoded.id,
             statusCheckOut: req.params.status
         })
         .populate('cartItems._id')
@@ -46,14 +57,14 @@ class CartController {
     static updateIncrement(req, res) {
         Cart.findOne({
             _id: req.params.id,
-            userId: req.decoded._id,
+            userId: req.decoded.id,
             'cartItems': { $elemMatch: { _id: req.body.itemId }} 
         })
         .then(result => { 
             if(result){
                 Cart.update({ 
                     _id: req.params.id,
-                    userId: req.decoded._id,
+                    userId: req.decoded.id,
                     "cartItems._id": req.body.itemId,
                 }, { 
                     $inc : {"cartItems.$.quantity" : 1, "cartItems.$.subTotal": req.body.increasePrice}
@@ -67,7 +78,7 @@ class CartController {
             } else {
                 Cart.update({ 
                     _id: req.params.id,
-                    userId: req.decoded._id
+                    userId: req.decoded.id
                 }, { 
                     $push : {"cartItems" : {'_id' : req.body.itemId , 'quantity' : 1, 'subTotal': req.body.increasePrice }}
                 })
@@ -87,14 +98,14 @@ class CartController {
     static updateCart(req, res) {
         Cart.findOne({
             _id: req.params.id,
-            userId: req.decoded._id,
+            userId: req.decoded.id,
             'cartItems': { $elemMatch: { _id: req.body.itemId }} 
         })
         .then(result => { 
             if(result){
                 Cart.update({ 
                     _id: req.params.id,
-                    userId: req.decoded._id,
+                    userId: req.decoded.id,
                     "cartItems._id": req.body.itemId,
                 }, { 
                     $set : {"cartItems.$.quantity" : (req.body.quantity), "cartItems.$.subTotal": req.body.subTotal}
@@ -108,7 +119,7 @@ class CartController {
             } else {
                 Cart.update({ 
                     _id: req.params.id,
-                    userId: req.decoded._id
+                    userId: req.decoded.id
                 }, { 
                     $push : {"cartItems" : {'_id' : req.body.itemId , 'quantity' : req.body.quantity, 'subTotal': req.body.subTotal }}
                 })
@@ -128,14 +139,14 @@ class CartController {
     static deleteCartItem(req, res) {
         Cart.findOne({
             _id: req.params.id,
-            userId: req.decoded._id,
+            userId: req.decoded.id,
             'cartItems': { $elemMatch: { _id: req.body.itemId }} 
         })
         .then(result => { 
             if(result){
                 Cart.update({ 
                     _id: req.params.id,
-                    userId: req.decoded._id
+                    userId: req.decoded.id
                 }, { 
                     $pull : {"cartItems" : {'_id' : req.body.itemId }}
                 })
@@ -169,7 +180,7 @@ class CartController {
     static checkOut(req, res) {
         Cart.update({
             _id: req.params.id,
-            userId: req.decoded._id
+            userId: req.decoded.id
         }, {
             statusCheckOut: "undelivered",
             totalPrice: req.body.grandTotal
@@ -185,7 +196,7 @@ class CartController {
     static arrived(req, res) {
         Cart.update({
             _id: req.params.id,
-            userId: req.decoded._id
+            userId: req.decoded.id
         }, {
             statusCheckOut: "done"
         })

@@ -34,6 +34,10 @@ var userSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Password is required']
+  },
+  role: {
+    type: String,
+    default: 'customer'
   }
 });
 
