@@ -183,14 +183,14 @@ describe('POST /register', function () {
 })
 
 describe('POST /login', function () {
-  it('login should return access_token with status 200', function(done) {
+  it('login should return token with status 200', function(done) {
     chai.request(app)
     .post('/users/login')
     .send(input)
     .end(function(err, res) {
       expect(err).to.be.null;
       expect(res).to.have.status(200)
-      expect(res.body).to.have.property('access_token')
+      expect(res.body).to.be.an("string");
   
       done()
     })

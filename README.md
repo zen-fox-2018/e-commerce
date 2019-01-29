@@ -6,10 +6,10 @@
 | ------ | ------ | ------ | ------ | 
 | POST | ````/users/register```` | Sign up with new user info | [body.email], [body.password]| 
 | POST | ```/users/login``` | Sign in while get an access token based on credentials | [body.email], [body.password] |
-| GET | ````/products```` | Get all the article from logged-in user | [headers.token] |
-| POST | ````/products```` | Create new article | [headers.token], [body.name], [body.description], [body.price], [body.stock], [body.imageUrl] |
-| PUT | ````/products/:id```` | Delete a user's article| [headers.token], [params.id], [body.name], [body.description], [body.price], [body.stock], [body.imageUrl] | 
-| DELETE | ````/products/:id```` | Delete a user's article| [headers.token], [params.id] | 
+| GET | ````/products```` | Get all the products | [headers.token] |
+| POST | ````/products```` | Create new product | [headers.token], [body.name], [body.description], [body.price], [body.stock], [body.imageUrl] |
+| PUT | ````/products/:id```` | Update a product| [headers.token], [params.id], [body.name], [body.description], [body.price], [body.stock], [body.imageUrl] | 
+| DELETE | ````/products/:id```` | Delete a product| [headers.token], [params.id] | 
 
 * **URL:**  
 /users/register

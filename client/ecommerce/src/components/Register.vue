@@ -40,12 +40,13 @@ export default {
               }
             })
             .then(response => {
+              swal("Welcome! You have successfully registering");
               this.inputRegister.email = ""
               this.inputRegister.password = ""
               window.location.reload()
             })
             .catch(err => {
-              console.log(err)
+              swal("Oops!", `${err.response.data.message}`, "error");
             })
         }
 

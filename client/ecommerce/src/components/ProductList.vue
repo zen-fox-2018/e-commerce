@@ -66,6 +66,7 @@ export default {
         }
       })
         .then(result => {
+          swal("Thank you!", "Added this item to cart", "success");
           this.$emit("getCarts")
         })
         .catch(err => {

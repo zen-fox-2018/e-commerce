@@ -52,17 +52,15 @@ export default {
                 }
               })
                 .then(({data}) => {
-                    console.log(data)
                     localStorage.setItem("cartId", data._id)
                     window.location.reload()
                 })
                 .catch((error) => {
-                    console.log(error.response);
+                    console.log(error)
                 });
             })
             .catch(err => {
-              console.log("masuk err client")
-              console.log(err)
+              swal("Oops!", `${err.response.data.message}`, "error");
             })
         }
     }
