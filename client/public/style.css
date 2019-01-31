@@ -1,0 +1,82 @@
+
+.navbarcolor{
+  background-color: rgb(72, 99, 150);
+}
+
+#carousel1{
+  background-color: rgb(136, 133, 133); 
+}
+
+/* #sidebarDashboard{
+  overflow: scroll;
+  height: 100%;
+} */
+
+/* p:hover{
+  background-color: brown;
+} */
+
+.iconNavbar{
+  width: 30px;
+  height: 30px;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* width: 50%; */
+}
+
+.follow{
+  color: green;
+  border-color: green;
+}
+
+.tag-border{
+  padding: 0 10px;
+  border-color: grey;
+  background-color: rgb(179, 175, 175);
+  color: black;
+}
+.tag-border:hover{
+  /* background-color: rgb(97, 96, 96); */
+  background-color: black;
+  color: white;
+}
+
+#rowlistarticle{
+  display: flex;
+  justify-content: space-between;
+}
