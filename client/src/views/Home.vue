@@ -15,7 +15,11 @@
             <v-card>
               <v-container grid-list-xs>
                 <v-layout column wrap align-center>
-                  <h2 class="categorytext" style="margin-bottom: 10%; margin-top: 10%" @click="showByCategory()">Category</h2>
+                  <h2
+                    class="categorytext"
+                    style="margin-bottom: 10%; margin-top: 10%"
+                    @click="showByCategory()"
+                  >Category</h2>
                   <v-btn
                     flat
                     class="category"
@@ -87,7 +91,7 @@ export default {
           }
         });
       } else {
-        this.allProducts = this.products
+        this.allProducts = this.products;
       }
     },
     toggleNavbar(status) {
@@ -126,12 +130,14 @@ export default {
   },
   created() {
     this.state = "home";
+    console.log(localStorage.token);
+    
+    if (localStorage.token == undefined) {
+      this.$router.replace(`/login`);
+      
+    }
   },
   beforeCreate() {
-    if (!localStorage.token) {
-      this.$router.replace(`/login`)
-    }
-
     a.get("/products", {
       headers: {
         token: localStorage.token

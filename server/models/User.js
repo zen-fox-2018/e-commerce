@@ -17,16 +17,25 @@ var UserSchema = new Schema({
                         throw "Email sudah ada"
                     }
                 }).catch((err) => {
-                    console.log(`error validasi di .catch`);
                     
                     throw err
                 });
             }
-        }
+        },
+        required: true
     },
-    password: String,
-    provinceId: Number,
-    cityId: Number
+    password: {
+        type: String, 
+        required: true
+    },
+    provinceId: {
+        type: String,
+        required: true
+    },
+    cityId: {
+        type: Number,
+        required: true
+    }
 })
 
 UserSchema.pre(`save`, function (next) {

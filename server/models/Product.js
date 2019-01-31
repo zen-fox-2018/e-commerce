@@ -14,9 +14,18 @@ var ProductSchema = new Schema({
         type: Number,
         required: true
     },
-    category: String,
-    imageUrl: String,
-    weight: Number
+    category: {
+        type: String,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    weight: {
+        type: Number,
+        required: true
+    }
 })
 
 var Product = mongoose.model('Product', ProductSchema)

@@ -95,14 +95,11 @@ module.exports = {
                         }).populate('item')
                 }
 
-            }).then((createdCart) => {
-                console.log(createdCart);
-                
+            }).then((createdCart) => {                
                 res.status(201).json(createdCart)
 
             }).catch((err) => {
-                console.log(err);
-                
+
                 res.status(500).json({msg: `internal server error`, err: err})
 
             });
@@ -131,7 +128,6 @@ module.exports = {
                 }
 
             }).catch((err) => {
-                console.log(err);
                 res.status(500).json({ msg: `internal server error`, error: err })
 
             });
@@ -154,18 +150,14 @@ module.exports = {
 
     },
     ongkir: function (req, res) {
-        console.log(req.body.weight);
         
         axios.post(`https://api.rajaongkir.com/starter/cost`, req.body, {
             headers: {
                 key: '6c5a3934c27a12b96f51bf4b680836b5'
             }
         }).then((result) => {
-            console.log(result.data);
             res.send(result.data)
         }).catch((err) => {
-            console.log(err.data);
-            
             res.send(err.data)
         });
         

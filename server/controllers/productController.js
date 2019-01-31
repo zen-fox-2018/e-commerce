@@ -20,7 +20,7 @@ module.exports = {
             });
     },
     findOne: function (req, res) {
-        Product.findById(req.params.id)
+        Product.findOne({_id: req.params.id})
             .then((result) => {
                 if (result) {
                     res.status(200).json(result)
@@ -55,9 +55,8 @@ module.exports = {
             }
             
         }).catch((err) => {
-            console.log(err);
             
-            res.status(500).json({msg: `internal server error`})
+            res.status(500).json({msg: `internal server error`, err:err})
         });
     },
 };
