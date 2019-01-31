@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <Navbar/>
+    <Navbar @checkLogin="checkLogin" :isLogin="status.isLogin" :isNotLogin="status.isNotLogin" />
 
     <v-content>
-      <router-view/>
+      <router-view :isLogin="status.isLogin" :isNotLogin="status.isNotLogin" />
     </v-content>
 
     <Footer/>
@@ -22,8 +22,26 @@ export default {
   },
   data () {
     return {
-      //
+       status: {
+          isLogin : false,
+          isNotLogin: true
+        }
     }
-  }
+  },
+  methods: {
+    checkLogin() {
+      let token = localStorage.getItem('token')
+      if(token) {
+        this.status.isLogin = true,
+        this.status.isNotLogin = false
+      } else {
+        this.status.isLogin = false,
+        this.status.isNotLogin = true
+      }
+    }
+  },
+  created() {
+    this.checkLogin()
+  },
 }
 </script>

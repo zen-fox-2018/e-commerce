@@ -1,5 +1,5 @@
 <template>
-  <v-layout row justify-center>
+  <v-layout row justify-end>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-btn slot="activator" color="primary" dark>Add Product</v-btn>
       <v-card>

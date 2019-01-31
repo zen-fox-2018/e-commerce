@@ -1,11 +1,13 @@
 <template>
     <div id="Product">
-        <createproduct/>
+        <v-container >
+            <createproduct/>
+        </v-container>
     </div>
 </template>
 
 <script>
-import createproduct from '@/components/createproduct.vue'
+import createproduct from '@/components/CreateProduct.vue'
 export default {
     components : {
         createproduct

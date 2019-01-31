@@ -9,7 +9,14 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      children: [
+        {
+          path: 'products/:id',
+          name: 'product-detail',
+          component: () => import('./components/ProductPage.vue')
+        },
+      ]
     },
     {
       path: '/products',

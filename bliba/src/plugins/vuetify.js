@@ -5,7 +5,10 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
- 
+import VueSwal from 'vue-swal'
+
+
+Vue.use(VueSwal)
 Vue.use(VueAxios, axios)
 
 

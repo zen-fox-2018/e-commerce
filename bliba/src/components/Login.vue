@@ -16,7 +16,7 @@
 
         <v-card>
              <v-container>
-        
+
             <form>
                 <v-text-field
                 v-model="email"
@@ -102,13 +102,15 @@ export default {
             })
             .then(({data}) => {
                 localStorage.setItem('token', data.token)
+                this.$swal('Success Login', '', 'success')
+                this.$emit('checkLogin')
                 this.menu = false
             })
         },
         clear () {
-        this.$v.$reset()
-        this.password= ''
-        this.email = ''
+            this.$v.$reset()
+            this.password= ''
+            this.email = ''
         }
     }
 }

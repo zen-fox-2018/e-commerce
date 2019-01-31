@@ -1,5 +1,14 @@
 <template>
     <div id="Checkout">
-        <h1>This is Checkout Page</h1>
+       <cart/>
     </div>
 </template>
+
+<script>
+import Cart from '@/components/Cart.vue'
+export default {
+    components : {
+        Cart
+    }
+}
+</script>

@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+
     <v-flex xs12 >
       <v-card>
 
@@ -16,11 +16,11 @@
         </v-container>
       </v-card>
     </v-flex>
-  </v-layout>
+
 </template>
 
 <script>
-import listproduct from "@/components/listproduct.vue";
+import listproduct from "@/components/ListProduct.vue";
   export default {
     data: () => ({
       products: []

@@ -3,11 +3,11 @@ class ProductController {
     static create(req, res) {
         let {name , price, stock} = req.body
         Product.create({
-            name, 
-            price, 
+            name,
+            price,
             stock,
             img_url: req.file.cloudStoragePublicUrl,
-            img_name: req.file.cloudStorageObject, 
+            img_name: req.file.cloudStorageObject,
         })
         .then(data => {
             res.status(201).json(data)
@@ -23,6 +23,17 @@ class ProductController {
                     msg : 'Internal Server Error'
                 })
             }
+        })
+    }
+
+    static getOne(req, res) {
+        let _id = req.params.id
+        Product.findOne({_id})
+        .then(product => {
+            res.json(product)
+        })
+        .catch(err => {
+            res.status(500).json({err: err.message})
         })
     }
 

@@ -4,6 +4,7 @@ const {CartController} = require('../controllers')
 const {checkProduct ,checkLogin} = require('../middlewares')
 
 router.use(checkLogin)
+router.get('/', CartController.getCartUser)
 router.put('/add',checkProduct, CartController.addCart)
 router.put('/remove',checkProduct, CartController.removeCart)
 

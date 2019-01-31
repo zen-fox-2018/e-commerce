@@ -5,7 +5,7 @@ class CartController {
         let userId = req.user._id
         Cart.findOne({userId})
         .populate('userId')
-        .populate('productId')
+        .populate('products.productId')
         .then(cart => {
             res.json(cart)
         })
@@ -35,7 +35,7 @@ class CartController {
                 })
                 res.json(cart)
             } else {
-                cart.products[checkCart].quantity++ 
+                cart.products[checkCart].quantity++
                 cart.save(err => {
                     console.log(err)
                 })
@@ -60,7 +60,7 @@ class CartController {
             cart.products = cart.products.filter(e => {
                 return e.productId._id !=  productId
             })
-            cart.save() 
+            cart.save()
             res.json(cart)
         })
         .catch(err => {
@@ -72,7 +72,7 @@ class CartController {
     }
 
     static checkOut(req, res) {
-        
+
     }
 
 }
