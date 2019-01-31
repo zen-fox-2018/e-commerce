@@ -72,7 +72,20 @@ class CartController {
     }
 
     static checkOut(req, res) {
-
+        let userId = req.user._id
+        Cart.findOne({userId})
+        .then(cart => {
+            console.log(cart.products)
+            cart.products = []
+            cart.save()
+            res.json(cart)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                msg: 'Internal Server Error'
+            })
+        })
     }
 
 }

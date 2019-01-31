@@ -1,10 +1,11 @@
 <template>
     <v-container align-content-center>
         <v-card>
-            <v-container grid-list-md v-for="(product, index) in userCart.products"  :key="index">
-                <v-layout row>
-                    <v-flex xs6>
-                        <v-card >
+            <v-container grid-list-md >
+                <v-layout column>
+                    <v-flex xs12 >
+                        <p class="subheading" v-if="userCart.products.length == 0" >You Need To Buy Item First</p>
+                        <v-card v-for="(product, index) in userCart.products"  :key="index">
                             <v-container>
                                 <v-layout row>
                                     <v-flex xs4>
@@ -21,6 +22,12 @@
                                                 <span class="grey--text">{{product.productId.name}}</span><br>
                                                 <span>Price : Rp. {{product.productId.price.toLocaleString('id')}}</span><br>
                                                 <span>Quantity : {{product.quantity}}</span>
+                                                <v-btn flat color="info" @click="addToCart(product.productId._id)">
+                                                    <v-icon>add</v-icon>
+                                                </v-btn> <br>
+                                                <v-btn flat color="info" @click="removeFromCart(product.productId._id)">
+                                                    <v-icon>delete</v-icon>
+                                                </v-btn>
                                             </div>
                                         </v-card-title>
                                     </v-flex>
@@ -29,8 +36,15 @@
                         </v-card>
                     </v-flex>
 
-                    <v-flex xs6>
-
+                    <v-flex xs12>
+                        <v-container>
+                            <v-layout align-end justify-center column fill-height>
+                                <p class="subheading"><strong>Total Price </strong><br> <br> Rp. {{totalPrice.toLocaleString('id')}}</p>
+                                <v-btn color="success" @click="checkOut">
+                                    Checkout
+                                </v-btn>
+                            </v-layout>
+                        </v-container>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -45,6 +59,15 @@ export default {
             userCart: {}
         }
     },
+    computed: {
+        totalPrice() {
+            let price = 0
+            this.userCart.products.forEach(product => {
+                price += (product.quantity * product.productId.price)
+            });
+            return price
+        }
+    },
     methods: {
         getCart() {
             let token = localStorage.getItem('token')
@@ -57,13 +80,57 @@ export default {
             })
             .then(({data}) => {
                 this.userCart = data
-                console.log(this.userCart.products)
+            })
+        },
+        checkOut() {
+            let token = localStorage.getItem('token')
+            this.axios({
+                method: 'put',
+                url: `http://localhost:3000/cart/checkout`,
+                headers: {
+                    token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(() => {
+                this.$swal('Success Purchase Item', '', 'success')
+                this.getCart()
+            })
+        },
+        addToCart(productId) {
+            let token = localStorage.getItem('token')
+            this.axios({
+                method: 'put',
+                url: `http://localhost:3000/cart/add`,
+                data: {productId},
+                headers: {
+                    token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(({data}) => {
+                this.getCart()
+            })
+        },
+        removeFromCart(productId) {
+            let token = localStorage.getItem('token')
+            this.axios({
+                method: 'put',
+                url: `http://localhost:3000/cart/remove`,
+                data: {productId},
+                headers: {
+                    token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(({data}) => {
+                this.$swal('Success Remove Item From Cart', '', 'success')
+                this.getCart()
             })
         }
     },
     created() {
         this.getCart()
-        console.log(userCart)
     },
 }
 </script>
