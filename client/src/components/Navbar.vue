@@ -75,12 +75,12 @@
         </v-btn>
         <v-list>
           <v-list-tile>
-              <v-btn flat:true>
+              <v-btn flat:true to="/wishlist">
                   <v-list-tile-title icon>
                       <v-icon>
-                          account_box
+                          favorite
                       </v-icon>
-                      My Profile
+                      My Wishlist
                   </v-list-tile-title>
               </v-btn>
           </v-list-tile>

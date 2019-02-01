@@ -38,7 +38,12 @@ const UserSchema = new Schema({
     role: {
         type: String,
         default: 'Customer'
-    }
+    },
+    wishlist: [
+        {
+            type: Schema.Types.ObjectId, ref: `Product`
+        }
+    ]
 })
 
 UserSchema.pre('save', function (next) {

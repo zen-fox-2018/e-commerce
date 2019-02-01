@@ -18,4 +18,13 @@ router.use(isLogin)
 /*find one user*/
 router.get('/', UserController.findOne)
 
+/*rate product*/
+router.post('/:productId', UserController.rateProduct)
+
+/*wishlist product*/
+router.put('/:productId', UserController.wishlistProduct)
+
+/*delete wishlist*/
+router.put('/remove/:productId', UserController.removeWishList)
+
 module.exports = router;

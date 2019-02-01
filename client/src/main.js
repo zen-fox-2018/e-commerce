@@ -8,7 +8,7 @@ import axios from 'axios'
 
 Vue.use(Vuetify)
 Vue.prototype.$axios = axios.create({
-  baseURL: 'https://timecommerce-server.khevin.pro'
+  baseURL: 'https://timecommercer-server.khevin.pro'
 })
 
 Vue.config.productionTip = false

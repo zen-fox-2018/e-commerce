@@ -88,7 +88,23 @@
     src="https://d23x6d9cx8qezf.cloudfront.net/wp-content/uploads/2018/04/Gronefeld-Parallax-tremblage-0675.jpg"
   >
    
-      <router-view @check-login="checkLogin" @is-login="checkUser" :products="products" :timing="timing" :fetched="fetched" @get-item="getItems" :cartDetail="carts" @is-register="checkRegister" @trigger-get="getCart" :total="total" @increment-item="getIncrement" @trigger-inc="getCart" :totalPrice="totalPrice" @decrement-item="getDecrement" @trigger-dec="getCart" @delete-carts="getDeleted" @trigger-delete="getCart" :username="user.name"></router-view>
+      <router-view @check-login="checkLogin" @is-login="checkUser" 
+      :products="products" :timing="timing" 
+      :fetched="fetched" @get-item="getItems" 
+      :cartDetail="carts" @is-register="checkRegister" 
+      @trigger-get="getCart" :total="total" 
+      @increment-item="getIncrement" 
+      @trigger-inc="getCart" :totalPrice="totalPrice" 
+      @decrement-item="getDecrement" 
+      @trigger-dec="getCart" 
+      @delete-carts="getDeleted" 
+      @trigger-delete="getCart" 
+      :username="user.name" 
+      @rate-product="getProducts"
+      @add-wishlist="checkUser"
+      :user="user"
+      :isLogin="isLogin"
+      @delete-wishlist="checkUser"></router-view>
   </v-parallax>
     
     <Footer></Footer>

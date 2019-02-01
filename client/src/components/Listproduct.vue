@@ -1,6 +1,24 @@
 <template>
   <v-item-group>
     <v-container grid-list-md>
+       <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      :top="y"
+      :color="color"
+      >
+      <v-icon>
+      {{icon}}
+      </v-icon>
+      {{ message }}
+      <v-btn
+          color="white"
+          flat
+          @click="snackbar = false"
+      >
+          Close
+      </v-btn>
+    </v-snackbar>
       <v-layout wrap>
         <v-flex
         v-for="(product, i) in products"
@@ -24,6 +42,7 @@
               top
               small
               right
+              v-show="isLogin"
               @click.prevent="addToCarts(product._id)">
                   <v-icon>
                       add_shopping_cart
@@ -55,22 +74,56 @@
                       <span>{{product.description}}</span><br><br>
                       <span>Price {{convertCurrency(product.price)}}</span><br>
                       <span>Stock {{product.stock}}</span>
+                      <span>
+                        <v-btn small  @click.prevent="addWishList(product._id)" v-show="isLogin">
+                          <v-icon>favorite</v-icon>
+                          Add to wishlist
+                        </v-btn>
+                      </span>
                   </div>
                 </v-card-title>
                 </div>
               </v-scroll-y-transition>
             </v-card>
           </v-item>
-          <v-card>
-             <div class="text-xs-center">
-            <v-rating v-model="rating"
-             background-color="orange lighten-3"
-              color="orange">
-            </v-rating>
-          </div>
+          <v-card dark>
+             <v-card-actions class="pa-3">
+                <v-btn small fab @click.prevent="rateProduct(product._id)" v-show="isLogin">
+                  <v-icon>grade</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <span class="grey--text text--lighten-2 caption mr-2" v-show="isLogin">
+                  ({{ product.ratingPoint }})
+                </span>
+           
+                <v-rating
+                  v-model="product.ratingPoint"
+                  background-color="white"
+                  color="yellow accent-4"
+                  dense
+                  hover
+                  size="18"
+                  light
+                  v-show="statusRate && isLogin"
+                ></v-rating>
+                
+                <v-rating
+                  v-model="rating"
+                  background-color="white"
+                  color="yellow accent-4"
+                  dense
+                  hover
+                  size="18"
+                  light
+                  v-show="!statusRate && isLogin"
+                ></v-rating>
+                 
+              </v-card-actions>
+
           </v-card>
         </v-flex>
       </v-layout>
+     
     </v-container>
   </v-item-group>
 </template>
@@ -78,13 +131,16 @@
 <script>
 export default {
   name: 'ListProduct',
-  props: ['products', 'timing', 'fetched'],
+  props: ['products', 'timing', 'fetched', 'isLogin'],
   data () {
     return {
       snackbar: false,
       color: '',
       message: '',
-      icon: ''
+      icon: '',
+      ratingPoint: 0,
+      rating: 0,
+      statusRate: false
     }
   },
   methods: {
@@ -121,6 +177,58 @@ export default {
         this.$emit('get-item', {
           notification: {...this}
         })
+      })
+    },
+    rateProduct: function (product) {
+      this.$axios({
+        method: `POST`,
+        url: `/users/${product}`,
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        data: {
+          ratingPoint: this.rating
+        }
+      })
+      .then(({ data }) => {
+        console.log(data)
+        this.snackbar = true
+        this.color = 'green'
+        this.message = `Thanks for rating our product!`
+        this.icon = 'check_circle'
+        this.ratingPoint = data.ratingPoint
+        this.$emit('rate-product')
+        this.rating = 0
+        this.statusRate = true
+      })
+      .catch(err => {
+        this.snackbar = true
+        this.color = 'red'
+        this.message = err.response.data.message
+        this.icon = 'error'
+        
+      })
+    },
+    addWishList: function (product) {
+      this.$axios({
+        method: `PUT`,
+        url: `/users/${product}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) => {
+        this.snackbar = true
+        this.color = 'green'
+        this.message = `Succesfully adding to your wishlist!`
+        this.icon = 'check_circle'
+        this.$emit('add-wishlist')
+      })
+      .catch(err => {
+        this.snackbar = true
+        this.color = 'red'
+        this.message = err.response.data.message
+        this.icon = 'error'
       })
     }
   }

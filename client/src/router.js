@@ -36,6 +36,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "history" */ '@/components/History.vue'),
         },
         {
+          path: 'wishlist',
+          name: 'wishlist',
+          component: () => import(/* webpackChunkName: "wishlist" */ '@/components/WishList.vue'),
+        },
+        {
           path: '/:id',
           name: 'cartdetail',
           component: () => import(/* webpackChunkName: "cartdetail" */ '@/components/CartDetail.vue'),

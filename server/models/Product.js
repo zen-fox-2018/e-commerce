@@ -20,6 +20,15 @@ const ProductSchema = new Schema({
     },
     image: {
         type: String
+    },
+    rating: [
+        {
+            type: Schema.Types.ObjectId, ref: `User`
+        }
+    ],
+    ratingPoint: {
+        type: Number,
+        default: 0
     }
 })
 

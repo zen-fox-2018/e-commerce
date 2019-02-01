@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const { generateToken, comparePassword } = require('../helpers')
+const Product = require('../models/Product')
 
 module.exports = {
     register: function (req, res) {
@@ -69,7 +70,8 @@ module.exports = {
                             token: token,
                             name: user.name,
                             email: user.email,
-                            role: user.role
+                            role: user.role,
+                            wishlist: user.wishlist
                         })
                     } else {
                         res.status(400).json({
@@ -91,13 +93,15 @@ module.exports = {
     findOne: function(req, res) {
         User
             .findOne({ _id: req.currentUser._id })
+            .populate('wishlist')
             .then(user => {
                 res.status(200).json({
                     name: user.name,
                     email: user.email,
                     avatar: user.avatar,
                     _id: user._id,
-                    role: user.role
+                    role: user.role,
+                    wishlist: user.wishlist
                 })
             })
             .catch(err => {
@@ -106,4 +110,76 @@ module.exports = {
                 })
             })
     },
+    rateProduct: function (req, res) {
+        User
+            .findOne({ _id: req.currentUser._id })
+            .then(user => {
+              return Product
+                        .findOne({ _id: req.params.productId })
+            })
+            .then(product => {
+                let filter = product.rating.filter(val => {
+                    return String(val._id) === String(req.currentUser._id)
+                })
+                if (filter.length) {
+                    res.status(400).json({
+                        message: `You already rate this product`
+                    })
+                } else {
+                    return Product
+                        .findOneAndUpdate({ _id: req.params.productId }, { $inc: {ratingPoint: +req.body.ratingPoint},$push: { rating: req.currentUser._id }}, {new: true})  
+                }
+            })
+            .then(result => {
+                let avgPoint = Math.floor(result.ratingPoint/result.rating.length)
+                return Product
+                        .findOneAndUpdate({ _id: req.params.productId }, {$set: {ratingPoint: avgPoint}}, {new: true})
+            })
+            .then(result => {
+                res.status(200).json(result)
+            })
+            .catch(err => {
+                res.status(500).json({
+                    message: err.message
+                })
+            })
+    },
+    wishlistProduct: function (req, res) {
+        User
+            .findOne({ _id: req.currentUser._id })
+            .then(user => {
+                let filter = user.wishlist.filter(val => {
+                    return String(val._id) === String(req.params.productId)
+                })
+                if (filter.length) {
+                    res.status(400).json({
+                        message: `You already wishlist this product`
+                    })
+                } else {
+                    return User 
+                            .findOneAndUpdate({ _id: req.currentUser._id }, {$push: {wishlist: req.params.productId}}, {new: true})
+                }
+            })
+            .then(result => {
+                console.log(result)
+                res.status(200).json(result)
+            })
+            .catch(err => {
+                res.status(500).json({
+                    message: err.message
+                })
+            })
+    },
+    removeWishList: function (req, res) {
+        User
+            .findOneAndUpdate({ _id: req.currentUser._id }, {$pull: {wishlist: req.params.productId}}, {new: true})
+            .then(result => {
+                res.status(200).json(result)
+            })
+            .catch(err => {
+                res.status(500).json({
+                    message: err.message
+                })
+            })
+    }
 }
