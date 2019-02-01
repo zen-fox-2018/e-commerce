@@ -1,11 +1,10 @@
 <template>
     <b-navbar toggleable="md" type="dark" sticky variant="info" style="background-color: black !important;height: 9%;">
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-        <b-navbar-brand> <h3> E-com </h3></b-navbar-brand>
+        <b-navbar-brand><router-link :to="{name: 'home'}" style="color: white;" >  <h3> ShoCheap </h3>  </router-link> </b-navbar-brand>
         <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
 
-                <b-nav-item><h5><router-link :to="{name: 'home'}" style="color: white;" > Home </router-link> </h5> </b-nav-item>
                 </b-navbar-nav>
 
                 <b-navbar-nav class="ml-auto">
