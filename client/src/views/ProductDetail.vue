@@ -10,11 +10,18 @@
       </div>
       <div class="col-7">
         <br><br><br>
-        <h2 class="text-left">Spider-Man</h2>
+        <h2 class="text-left">{{ detailPayload.name }}</h2>
         <br>
-        <h4 class="text-left">Developer: {{ detailPayload.name }}</h4>
-        <h4 class="text-left">Price: {{ detailPayload.price }}</h4>
-        <h4 class="text-left">Stock: {{ detailPayload.stock }}</h4>
+        <h4 class="text-left">Developer: {{ detailPayload.developer }}</h4>
+        <h4 v-if="detailPayload.discountPrice !== 0" class="text-left">Price: 
+          <div class="price-wrapper">
+            <div class="price-slash"></div>
+            <div class="price">IDR {{detailPayload.price}}</div>
+          </div>
+          {{ detailPayload.discountPrice }}
+          <small>{{detailPayload.dayRemaining}} hours remaining</small>
+        </h4>
+        <h4 v-else class="text-left">Price: IDR {{detailPayload.price}}</h4>
         <h4 class="text-left">Description:</h4>
         <div class="card" style="width: 30rem;">
           <div class="card-body">
@@ -57,23 +64,23 @@ export default {
         swal('Oops', 'Have to Signed in First', 'error');
       })
     },
-    getYouTubeVideo() {
-      axios({
-        method: 'get',
-        url: `http://localhost:3000/youtube/spiderman`
-      })
-      .then((result) => {
-        console.log('olala')
-        console.log(result, 'ini ersult dari nyari you tube')
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    }
+
   }
 }
 </script>
 
 <style>
+.price-wrapper{
+  position: relative; 
+  display: inline-block;
+}
 
+.price-slash{
+  position: relative;
+  width: 100%;
+  height: 0;
+  border-top: 2px solid red;
+  transform: rotate(-16deg);
+  top: 17px;
+}
 </style>

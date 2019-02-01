@@ -18,7 +18,8 @@ const transactionsSchema = new Schema({
         default: new Date()
     },
     transactionSuccess: false,
-    transactionDone: Date
+    transactionDone: Date,
+    discount: []
 })
 
 const Transaction = mongoose.model('Transaction', transactionsSchema);

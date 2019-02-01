@@ -5,6 +5,10 @@ const cors = require('cors');
 require('dotenv').config();
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+const {discount} = require('./helpers/discountCheck');
+discount();
+
+
 const itemsRouter = require('./routes/items');
 const usersRouter = require('./routes/users');
 const cartRouter = require('./routes/carts');

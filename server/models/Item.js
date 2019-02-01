@@ -22,9 +22,13 @@ const itemsSchema = new Schema({
         type: String,
         required: [true, 'Image is Required']
     }, 
-    stock: {
+    discountPrice: {
         type: Number,
-        required: [true, 'Stock is Required']
+        default: 0
+    },
+    dayRemaining: {
+        type: Number,
+        default: 0
     },
     category: [],
 })

@@ -26,9 +26,11 @@ module.exports = {
         })
     },
     createTransaction: function(req, res) {
+        console.log(req.body.discount, 'ini diskon dair diskon kontroller')
         let newTransaction = new Transaction({
             userId: req.currentUser._id,
-            itemId: req.body.itemId
+            itemId: req.body.itemId,
+            discount: req.body.discount
         })
         newTransaction.save(function(err) {
             if (err) res.status(400).json({err: err.message});

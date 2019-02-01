@@ -3,11 +3,13 @@
       <li class="media my-4">
         <img class="mr-3" :src="item.image" height="120" width="120">
         <h6 class="mr-3 my-5">{{ item.name }}</h6>
-        <h6 class="mr-3 my-5">Price: {{ item_from_cart.price }}</h6>
+        <h6 v-if="item.dayRemaining > 0" class="mr-3 my-5">Price: {{ item_from_cart.discountPrice }}</h6>
+        <h6 v-else class="mr-3 my-5">Price: {{ item_from_cart.price }}</h6>
         <h6 class="mr-3 my-5">Qty: {{ qty }}</h6>
         <a class="my-5 mr-2"><i @click="addItem" class="fas fa-chevron-circle-up"></i></a>
         <a class="my-5 mr-3"><i @click="reduceItem" class="fas fa-chevron-circle-down"></i></a>
-        <h6 class="my-5">SubTotal: {{ item.price * qty }}</h6>
+        <h6 v-if="item.dayRemaining > 0" class="my-5">SubTotal: {{ item.discountPrice * qty }}</h6>
+        <h6 v-else class="my-5">SubTotal: {{ item.price * qty }}</h6>
         <a class="ml-5 my-5"><i @click="removeItem" class="fas fa-trash"></i></a>
       </li>
       <hr>

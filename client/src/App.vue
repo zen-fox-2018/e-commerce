@@ -3,9 +3,11 @@
     <div class="row">
       <div class="col-2 box">
         <img src="https://i.pinimg.com/originals/5e/22/86/5e2286e02a8d3a65558ad3adf7534670.jpg" style="width:200px; height:200px;">
-        <h5><router-link to="/">HOME</router-link></h5>
-        <h5><router-link to="/cart">CART({{ count_cart }})</router-link></h5>
-        <h5><router-link to="/history">HISTORY</router-link></h5>
+        <h5 v-if="!isAdmin"><router-link to="/">HOME</router-link></h5>
+        <h5 v-if="!isAdmin"><router-link to="/cart">CART({{ count_cart }})</router-link></h5>
+        <h5 v-if="!isAdmin"><router-link to="/history">HISTORY</router-link></h5>
+        <h5 v-if="isAdmin"><router-link to="/admin">ADMIN</router-link></h5>
+        <h5 v-if="isAdmin"><router-link to="/items">ITEMS</router-link></h5>
         <br><br>
         <h5 v-if="!isLogin"><router-link to="/auth">SIGN IN</router-link></h5>
         <h5 @click="logout" v-if="isLogin">LOGOUT</h5>
@@ -23,6 +25,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      isAdmin: false,
       item_payload: [],
       count_cart: 0,
       server: 'http://localhost:3000',
@@ -38,18 +41,26 @@ export default {
       this.item_payload = [];
       this.count_cart = 0;
       localStorage.clear();
+      this.isAdmin = false;
+      this.$router.push('/')
       this.checkState();
     },
     checkState() {
       let token = localStorage.getItem('token');
       if (token) {
         this.isLogin = true;
+        if (localStorage.getItem('role') == 'false') {
+          // not admin
+          this.isAdmin  = false;
+        } else {
+          this.isAdmin = true;
+          this.$router.push('/admin') 
+        }
       } else {
         this.isLogin = false;
       }
     },
     receiveItemFromHome(item) {
-      console.log(item, 'ini item from homee')
       this.item_payload.push(item);
       this.count_cart += 1;
     },
@@ -62,7 +73,6 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data, 'ini data dari item payloaddd');
           this.item_payload = data[0].itemId;
           this.count_cart = data[0].itemId.length;
         })
@@ -87,10 +97,7 @@ export default {
       this.count_cart = 0;
     },
     renewItemPayload(val) {
-      // console.log(val, 'ini val dari renew item payload')
-      // this.item_payload == [];
       this.getAllCartFromDb();
-      // this.getAllCartFromDb();
     }
   },
   created() {

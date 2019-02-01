@@ -80,11 +80,26 @@ export default {
     countTotal() {
       let total = 0
       for (let i = 0; i < this.payload.length; i++) {
-        total += this.payload[i].price;
+        if (this.payload[i].discountPrice !== 0 && this.payload[i].dayRemaining > 0) {
+          total += this.payload[i].discountPrice;
+        } else {
+          total += this.payload[i].price;
+        }
       }
       this.total_price = total;
     },
     checkout() {
+      let obj = []
+      for (let i = 0; i < this.cleanData.length; i++) {
+        if (this.cleanData[i].dayRemaining > 0) {
+          // console.log(cleanData[i])
+          obj.push({
+            'id': this.cleanData[i]._id,
+            'name': this.cleanData[i].name,
+            'discountPrice':  this.cleanData[i].discountPrice
+          })
+        }
+      }
       let mapped = this.payload.map((e) => {
          return e._id
       })
@@ -95,7 +110,8 @@ export default {
           token: localStorage.getItem('token')
         },
         data: {
-          itemId: mapped
+          itemId: mapped,
+          discount: obj
         }
       })
       .then(() => {

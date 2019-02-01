@@ -63,6 +63,7 @@ export default {
       })
         .then(({ data }) => {
           localStorage.setItem('token', data.token);
+          localStorage.setItem('role', data.role);
           this.$emit('success_login');
           this.input = {'name':'', 'email':'', 'password':''};
           this.$router.push('/') 

@@ -5,7 +5,10 @@ const User = require('../models/User');
 module.exports = {
     signIn: function(req, res) {
         let token = jwt.createToken(req.currentUser.email)
-        res.status(200).json({token: token})
+        res.status(200).json({
+            token: token,
+            role: req.currentUser.role
+        })
     },
     signUp: function(req, res) {
         let newUser = new User({

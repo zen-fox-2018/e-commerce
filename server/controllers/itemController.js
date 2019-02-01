@@ -45,5 +45,36 @@ module.exports = {
           })
         }
       })
-    }
+    },
+    setDiscount: function(req, res) {
+      Item.findById(req.params.item_id, function(err, item) {
+        if (err) res.status(400).json({err: err.message})
+        else {
+          let updated = {discountPrice: item.price * 0.5, dayRemaining: 7}
+          Item.findByIdAndUpdate(req.params.item_id, updated, function(err, item) {
+            if (err) res.status(400).json({err: err.message})
+            else {
+              res.status(200).json(item);
+            }
+          })
+        }
+      })
+    },
+    minusOne: function(req, res) {
+      Item.find({}, function(err, items) {
+        if (err) res.status(400).json({err: err.message})
+        else {
+          // let newItems = []
+          items.forEach(item => {
+            if (item.dayRemaining > 0) {
+              item.dayRemaining -= 1;
+              Item.findByIdAndUpdate(item._id, {dayRemaining: item.dayRemaining}, function(err) {
+                if (err) res.status(400).json({err: err.message})
+              })
+            }
+          });
+          res.status(200).json({msg: 'success'})
+        }
+      })
+    },
 }
