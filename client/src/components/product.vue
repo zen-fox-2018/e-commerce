@@ -205,6 +205,11 @@ export default {
         })
         this.getProduct()
     },
+    watch: {
+        '$route' (val) {
+            this.getProduct()
+        }
+    }
 }
 </script>
 

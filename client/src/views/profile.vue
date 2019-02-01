@@ -14,7 +14,10 @@
                                 </h1>
                             </div>
                             <div class="col mb-1">
-                                <h1 class="text-left">
+                                <h1 v-if="products.length !== 0" class="text-left">
+                                    {{ products[0].userId.name }}
+                                </h1>
+                                <h1 v-else class="text-left">
                                     {{ user.name }}
                                 </h1>
                             </div>

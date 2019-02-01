@@ -10,13 +10,17 @@ class Controller {
                 msg: `Name, email and password must be field`
             })
         } else {
+            let image = null
             let user = {
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password,
                 address: req.body.address,
                 rating: 0,
-                image: req.file.cloudStoragePublicUrl
+                image
+            }
+            if (req.file) {
+                image = req.file.cloudStoragePublicUrl
             }
     
             User.create(user)
@@ -28,7 +32,7 @@ class Controller {
                     })
                 })
                 .catch(err =>{
-                    // console.log(err)
+                    console.log(err)
                     res.status(500).json({
                         msg: err.message
                     })

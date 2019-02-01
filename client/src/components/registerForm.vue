@@ -57,6 +57,7 @@ export default {
             this.$router.push({ name: 'home'})
         })
         .catch(err => {
+            swal('Sorry', `${err.response.data.msg}`, 'error')
             console.log(err.response)
         })
     },

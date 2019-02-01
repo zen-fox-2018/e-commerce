@@ -10,9 +10,8 @@
 
                 <b-navbar-nav class="ml-auto">
 
-                <b-nav-form @submit.prevent="search">
+                <b-nav-form @keyup="search">
                     <b-form-input v-model="query" class="mr-sm-2" type="text" placeholder="Search"/>
-                    <b-button class="my-2 my-sm-0" type="submit">Search</b-button>
                 </b-nav-form>
 
                 <b-nav-item-dropdown right >
@@ -20,7 +19,7 @@
                     <template slot="button-content">
                     <em style="color: white"> User </em>
                     </template>
-                    <div v-if="user">
+                    <div v-if="isLogin">
                         <b-dropdown-item><router-link :to="{ name: 'profile', params: {userId: user._id} }" style="color: black">Profile</router-link></b-dropdown-item>
                         <b-dropdown-item @click="signOut">Signout</b-dropdown-item>
                     </div>
@@ -29,7 +28,7 @@
                         <b-dropdown-item ><router-link :to="{ name: 'register' }" style="color: black"> Register </router-link></b-dropdown-item>
                     </div>
                 </b-nav-item-dropdown>
-                <b-nav-item v-if="user"><router-link :to="{ name: 'sell' }" style="color: white"> <em> Sell </em> </router-link></b-nav-item>
+                <b-nav-item v-if="isLogin"><router-link :to="{ name: 'sell' }" style="color: white"> <em> Sell </em> </router-link></b-nav-item>
                  
                 <b-nav-item-dropdown right >
                     <template slot="button-content">
@@ -89,7 +88,8 @@ export default {
   name: 'navbar',
   data () {
       return {
-          query: ''
+          query: '',
+          isLogin: false
       }
   },
   props: {
@@ -100,6 +100,7 @@ export default {
   methods: {
       signOut () {
           localStorage.removeItem('token')
+          this.isLogin = false
           swal("Yeay!", "You signed out", "success")
           this.$router.push({ name: 'home'})
       },
@@ -110,6 +111,20 @@ export default {
           this.$emit('getAll')
       }
   },
+  created () {
+      if (this.user == '{}' || !localStorage.token) {
+          this.isLogin = false
+      } else {
+          this.isLogin = true
+      }
+  },
+  watch: {
+      user (val) {
+          if (val) {
+              this.isLogin = true
+          }
+      }
+  }
 }
 </script>
 

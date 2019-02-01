@@ -95,6 +95,8 @@ export default {
   created () {
     if (localStorage.token) {
       this.getUser()
+    } else {
+      this.user = {}
     }
   },
   watch: {
