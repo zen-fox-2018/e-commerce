@@ -10,6 +10,8 @@ router.post('/', TransactionController.createTransaction)
 
 router.get('/:transactionId', TransactionController.getTransaction)
 
+router.patch('/:transactionId', TransactionController.updateTransaction)
+
 router.delete('/:transactionId', TransactionController.deleteTransaction)
 
 

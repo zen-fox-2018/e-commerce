@@ -82,7 +82,7 @@ class TransactionController {
   }
 
   static deleteTransaction(req, res) {
-    Transaction.findOneAndDelete({_id: req.params.transactionId})
+    Transaction.findByIdAndRemove(req.params.transactionId)
       .then(function(transaction) {
         res.status(200).json(transaction)
       })

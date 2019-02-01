@@ -21,6 +21,7 @@ class CartController {
       buyer: req.body.buyer,
       quantity: req.body.quantity
     }
+
     Cart.findOne({item: req.body.item, buyer: req.body.buyer})
       .then(function(cart) {
         if (cart) {
@@ -72,6 +73,19 @@ class CartController {
 
   static deleteCart(req, res) {
     Cart.findByIdAndRemove(req.params.cartId)
+      .then(function(cart) {
+        res.status(200).json(cart)
+      })
+      .catch(function(error) {
+        res.status(500).json({
+          message: "Internal Server Error",
+          error: error
+        })
+      })
+  }
+
+  static deleteAllCart(req, res) {
+    Cart.deleteMany({buyer: req.params.userId})
       .then(function(cart) {
         res.status(200).json(cart)
       })

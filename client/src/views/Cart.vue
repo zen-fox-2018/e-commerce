@@ -14,7 +14,7 @@
           <v-layout row wrap>
             <v-flex xs4>
               <v-img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxk1-7GnsMbnBqW_Mwm77Z44Thq8_-IQD09czW0wzzrAheHGrd"
+              :src="cart.item.image"
               contain
               max-height="200"
               max-width="200"

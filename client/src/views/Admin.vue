@@ -68,7 +68,7 @@
           <v-layout row wrap>
             <v-flex xs4>
               <v-img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxk1-7GnsMbnBqW_Mwm77Z44Thq8_-IQD09czW0wzzrAheHGrd"
+              :src="product.image"
               contain
               max-height="200"
               max-width="200"
@@ -91,30 +91,83 @@
       </div>
 
       <div v-if="page == 'pendingtransactions'">
-        <v-card v-for="product in products">
+        <v-card v-for="transaction in pendingTrans">
           <v-container
             fluid
             grid-list-lg
           >
           <v-layout row wrap>
             <v-flex xs4>
-              <v-img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxk1-7GnsMbnBqW_Mwm77Z44Thq8_-IQD09czW0wzzrAheHGrd"
-              contain
-              max-height="200"
-              max-width="200"
-              ></v-img>
+              <h3 v-for="cart in transaction.carts">{{cart.item.name}} X {{cart.item.quantity}}</h3><br>
+              <h2>Status: {{transaction.status}}</h2>
             </v-flex>
             <v-flex xs4>
-              <v-card-title><h3>{{product.name}}</h3></v-card-title>
+              <v-card-title><h3>Order Date {{new Date(transaction.date_order).toLocaleString()}}</h3></v-card-title>
               <v-card-text>
-                <p>Price: IDR {{product.price.toLocaleString()}}</p>
-                <p>{{product.description}}</p>
+                <p>Total Price: IDR {{transaction.totalprice.toLocaleString()}}</p>
+                <p>To: {{transaction.name}}</p>
+                <p>Address: {{transaction.shippedto}}</p>
               </v-card-text>
             </v-flex>
             <v-flex xs4>
-              <v-btn dark color="blue" @click="toEditProduct(product._id)">Edit Product</v-btn><br>
-              <v-btn dark color="red" @click="deleteProduct(product._id)">Delete Product</v-btn><br>
+              <v-btn v-if="transaction.status == 'Payment Sent'" dark color="blue" @click="confirmSentItem(transaction._id)">Confirm Sending Item</v-btn><br>
+              <v-btn v-if="transaction.status == 'Done'" dark color="red" @click="deleteTransaction(transaction._id)">Confirm Item Received</v-btn><br>
+            </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
+      </div>
+
+      <div v-if="page == 'onprocesstransactions'">
+        <v-card v-for="transaction in onprocessTrans">
+          <v-container
+            fluid
+            grid-list-lg
+          >
+          <v-layout row wrap>
+            <v-flex xs4>
+              <h3 v-for="cart in transaction.carts">{{cart.item.name}} X {{cart.item.quantity}}</h3><br>
+              <h2>Status: {{transaction.status}}</h2>
+            </v-flex>
+            <v-flex xs4>
+              <v-card-title><h3>Order Date {{new Date(transaction.date_order).toLocaleString()}}</h3></v-card-title>
+              <v-card-text>
+                <p>Total Price: IDR {{transaction.totalprice.toLocaleString()}}</p>
+                <p>To: {{transaction.name}}</p>
+                <p>Address: {{transaction.shippedto}}</p>
+              </v-card-text>
+            </v-flex>
+            <v-flex xs4>
+              <v-btn v-if="transaction.status == 'Payment Sent'" dark color="blue" @click="confirmSentItem(transaction._id)">Confirm Sending Item</v-btn><br>
+              <v-btn v-if="transaction.status == 'Done'" dark color="red" @click="deleteTransaction(transaction._id)">Delete Transaction</v-btn><br>
+            </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
+      </div>
+
+      <div v-if="page == 'transactionsdone'">
+        <v-card v-for="transaction in doneTrans">
+          <v-container
+            fluid
+            grid-list-lg
+          >
+          <v-layout row wrap>
+            <v-flex xs4>
+              <h3 v-for="cart in transaction.carts">{{cart.item.name}} X {{cart.item.quantity}}</h3><br>
+              <h2>Status: {{transaction.status}}</h2>
+            </v-flex>
+            <v-flex xs4>
+              <v-card-title><h3>Order Date {{new Date(transaction.date_order).toLocaleString()}}</h3></v-card-title>
+              <v-card-text>
+                <p>Total Price: IDR {{transaction.totalprice.toLocaleString()}}</p>
+                <p>To: {{transaction.name}}</p>
+                <p>Address: {{transaction.shippedto}}</p>
+              </v-card-text>
+            </v-flex>
+            <v-flex xs4>
+              <v-btn v-if="transaction.status == 'Payment Sent'" dark color="blue" @click="confirmSentItem(transaction._id)">Confirm Sending Item</v-btn><br>
+              <v-btn v-if="transaction.status == 'Done'" dark color="red" @click="deleteTransaction(transaction._id)">Delete Transaction</v-btn><br>
             </v-flex>
             </v-layout>
           </v-container>
@@ -153,6 +206,24 @@
     },
     props: ['url'],
     methods: {
+      confirmSentItem(id) {
+        axios.patch(`${this.url}/transactions/${id}`, {status: "Item Has Been Sent"})
+          .then((response) => {
+            this.getTransactions()
+          })
+          .catch((error) => {
+            console.log(error.message);
+          })
+      },
+      deleteTransaction(id) {
+        axios.delete(`${this.url}/transactions/${id}`)
+          .then((response) => {
+            this.getTransactions()
+          })
+          .catch((error) => {
+            console.log(error.message);
+          })
+      },
       handleFileUpload() {
         this.file = this.$refs.file.files[0];
       },
@@ -189,13 +260,18 @@
       },
 
       getTransactions() {
+        this.products = []
+        this.pendingTrans = []
+        this.onprocessTrans = []
+        this.doneTrans = []
+
         axios.get(`${this.url}/transactions/`)
           .then((response) => {
             response.data.forEach((trans) => {
-              if (trans.status == "Pending") {
+              if (trans.status == "Payment Sent") {
                 this.pendingTrans.push(trans)
               }
-              else if (trans.status == "On Process") {
+              else if (trans.status == "Item Has Been Sent") {
                 this.onprocessTrans.push(trans)
               }
               else if (trans.status == "Done") {
@@ -245,6 +321,7 @@
     },
     created() {
       this.getProducts()
+      this.getTransactions()
     },
     mounted() {
       if (localStorage.getItem('token')) {

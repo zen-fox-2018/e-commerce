@@ -120,6 +120,8 @@
             this.carts = []
             this.totalPrice = 30000
             this.itemsBought = []
+            this.clearCart()
+            this.$router.push('/transactions')
             console.log('berhasil place order');
           })
           .catch((error) => {
@@ -129,6 +131,16 @@
 
       toCheckout() {
         this.$router.push('/checkout')
+      },
+
+      clearCart(){
+        axios.delete(`${this.url}/carts/user/${localStorage.getItem('id')}`)
+        .then((response) => {
+          console.log('berhasil delete carts');
+        })
+        .catch((error) => {
+          console.log(error.message);
+        })
       },
 
       getCarts() {

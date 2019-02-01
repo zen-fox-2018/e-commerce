@@ -10,5 +10,7 @@ router.get('/buyer/:buyerId', CartController.getCarts)
 
 router.delete('/:cartId', CartController.deleteCart)
 
+router.delete('/user/:userId', CartController.deleteAllCart)
+
 
 module.exports = router;

@@ -2,84 +2,38 @@
   <div class="">
     <v-container grid-list-md text-xs>
       <center>
-      <h1>Transaction</h1>
+      <h1>Transactions</h1>
       </center>
       <br>
       <div>
         <v-card>
           <v-container fluid grid-list-lg>
-            <v-layout v-for="trans in transaction" row wrap>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3 v-for="item in trans.carts">{{item.name}} X {{item.quantity}}</h3>
-                </v-card-title>
-              </v-flex>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3>X {{item.quantity}}</h3>
-                </v-card-title>
-              </v-flex>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3>IDR {{(item.price * item.quantity).toLocaleString()}}</h3>
-                </v-card-title>
-              </v-flex>
-            </v-layout>
-            <v-layout row wrap>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3>Shipping Fee: </h3>
-                </v-card-title>
-              </v-flex>
-              <v-flex xs4>
-              </v-flex>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3>IDR {{(30000).toLocaleString()}}</h3>
-                </v-card-title>
-              </v-flex>
-            </v-layout>
-            <v-layout row wrap>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3>Total Price: </h3>
-                </v-card-title>
-              </v-flex>
-              <v-flex xs4>
-              </v-flex>
-              <v-flex xs4>
-                <v-card-title>
-                  <h3>IDR {{totalPrice.toLocaleString()}}</h3>
-                </v-card-title>
-              </v-flex>
-            </v-layout>
+            <v-card v-for="transaction in transactions">
+              <v-container
+                fluid
+                grid-list-lg
+              >
+              <v-layout row wrap>
+                <v-flex xs4>
+                  <h3 v-for="cart in transaction.carts">{{cart.item.name}} X {{cart.item.quantity}}</h3><br>
+                  <h2>Status: {{transaction.status}}</h2>
+                </v-flex>
+                <v-flex xs4>
+                  <v-card-title><h3>Order Date {{new Date(transaction.date_order).toLocaleString()}}</h3></v-card-title>
+                  <v-card-text>
+                    <p>Total Price: IDR {{transaction.totalprice.toLocaleString()}}</p>
+                  </v-card-text>
+                </v-flex>
+                <v-flex xs4>
+                  <v-btn v-if="transaction.status == 'Waiting For Payment'" dark color="blue" @click="confirmPayment(transaction._id)">Confirm Payment</v-btn><br>
+                  <v-btn v-if="transaction.status == 'Item Has Been Sent'" dark color="indigo" @click="confirmReceived(transaction._id)">Confirm Item Received</v-btn><br>
+                </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card>
           </v-container>
         </v-card>
         <br>
-        <br><br>
-        <center>
-        <h1>Shipping Address</h1>
-        <br>
-          <v-form
-          ref="form"
-          >
-
-          <v-text-field
-          v-model="name"
-          label="Receiver Name"
-          required
-          ></v-text-field>
-
-          <v-textarea
-          v-model="address"
-          label="Address"
-          required
-          ></v-textarea>
-
-          <v-btn dark color="black" @click="placeOrder">Place Order</v-btn><br
-
-          </v-form>
-        </center>
         <br><br>
       </div>
     </v-container>
@@ -95,27 +49,47 @@
     },
     data: () => {
       return {
-        transactions: []
+        transactions: [],
       }
     },
     props: ['url'],
     methods: {
       getTransactions() {
-        axios.post(`${this.url}/transactions/buyer/${localStorage.getItem('Id')}`, obj)
+        axios.get(`${this.url}/transactions/buyer/${localStorage.getItem('id')}`)
           .then((response) => {
             this.transactions = response.data
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.message);
+          })
+      },
+
+      confirmPayment(id) {
+        axios.patch(`${this.url}/transactions/${id}`, {status: "Payment Sent"})
+          .then((response) => {
+            this.getTransactions()
+          })
+          .catch((error) => {
+            console.log(error.message);
+          })
+      },
+
+      confirmReceived(id) {
+        axios.patch(`${this.url}/transactions/${id}`, {status: "Done"})
+          .then((response) => {
+            this.getTransactions()
+          })
+          .catch((error) => {
+            console.log(error.message);
           })
       },
     },
+    created() {
+      this.getTransactions()
+    },
     mounted() {
       if (!localStorage.getItem('token')) {
-        this.$router.push('/login')
-      }
-      else {
-        this.getTransactions()
+        this.$router.push('/products')
       }
     }
   }

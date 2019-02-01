@@ -59,5 +59,6 @@ export default new Router({
       name: 'transactions',
       component: () => import(/* webpackChunkName: "about" */ './views/Transactions.vue')
     },
-  ]
+  ],
+  mode: 'history'
 })

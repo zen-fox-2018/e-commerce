@@ -12,8 +12,8 @@
       </div>
       <br>
       <v-layout row wrap>
-        <v-flex xs3 sm3 pa-1>
-          <v-card v-for="product in products">
+        <v-flex xs3 sm3 pa-1 v-for="product in products">
+          <v-card>
             <v-img
               :src="product.image"
               contain
@@ -28,67 +28,68 @@
               </div>
             </v-card-title>
             <v-layout row justify-center>
+
               <v-card-actions>
-                <v-layout row justify-center>
-                  <v-dialog v-model="dialogCart" max-width="600px">
-                    <v-btn slot="activator" color="black" dark>Add to Cart</v-btn>
-                    <v-card>
-                      <v-card-text>
-                        <center>
-                          <h3>You will add {{product.name}} to your cart</h3>
-                          <br>
-                          <h3>Enter the amount you want to buy</h3>
-                          <v-text-field
-                          v-model="quantity"
-                          type="number"
-                          label="Amount"
-                          required
-                          ></v-text-field>
-                        </center>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue" dark @click="addToCart(product._id)">Add And Continue Shopping</v-btn>
-                        <v-btn color="green" dark @click="dialogCart = false">Add And Chekcout</v-btn>
-                        <v-btn color="red" dark @click="dialogCart = false">Cancel</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-layout>
+                <v-btn v-if="isLogin" @click="showAddToCart(product._id)" color="black" dark>Add to Cart</v-btn>
+                <v-btn @click="showDetail(product._id)" color="white" light>Show Details</v-btn>
 
               </v-card-actions>
-            </v-layout>
-            <v-layout row justify-center>
-              <v-dialog v-model="dialog" max-width="600px">
-                <v-btn slot="activator" color="white" light>Show Details</v-btn>
-                <v-card>
-                  <v-card-text>
-                    <center>
-                      <h1>{{product.name}}</h1>
-                      <br>
-                      <v-img
-                        :src="product.image"
-                        contain
-                        max-height="250"
-                        max-width="250"
-                      ></v-img>
-                      <br>
-                      <h1>Price {{product.price.toLocaleString()}}</h1>
-                      <br>
-                      <h2>{{product.description}}</h2>
-                    </center>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+
             </v-layout>
             <br>
           </v-card>
         </v-flex>
 
+      </v-layout>
+      <v-layout row justify-center>
+        <v-dialog v-model="dialog" max-width="600px">
+          <v-card>
+            <v-card-text>
+              <center>
+                <h1>{{product.name}}</h1>
+                <br>
+                <v-img
+                :src="product.image"
+                contain
+                max-height="250"
+                max-width="250"
+                ></v-img>
+                <br>
+                <h1>Price: IDR {{product.price.toLocaleString()}}</h1>
+                <br>
+                <h2>{{product.description}}</h2>
+              </center>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-dialog return-value v-model="dialogCart" max-width="600px">
+          <v-card>
+            <v-card-text>
+              <center>
+                <h3>You will add {{product.name}} to your cart</h3>
+                <br>
+                <h3>Enter the amount you want to buy</h3>
+                <v-text-field
+                v-model="quantity"
+                type="number"
+                label="Amount"
+                required
+                ></v-text-field>
+              </center>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue" dark @click="addToCart(product._id)">Add And Continue Shopping</v-btn>
+              <v-btn color="red" dark @click="dialogCart = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-container>
   </div>
@@ -103,10 +104,17 @@
     },
     data: () => {
       return {
-        dialog: "",
-        dialogCart: "",
+        dialog: false,
+        dialogCart: false,
         quantity: 1,
         products: [],
+        product: {
+          _id: "id",
+          price: "price",
+          name: "name",
+          description: "description",
+          image: "image"
+        },
         allproducts: [],
         playingcards: [],
         closeup: [],
@@ -115,7 +123,7 @@
         videobook: []
       }
     },
-    props: ['url'],
+    props: ['url', 'isLogin'],
     methods: {
       getAllProduct() {
         this.products = this.allproducts
@@ -134,6 +142,26 @@
       },
       getVideoBook() {
         this.products = this.videobook
+      },
+      showAddToCart(id) {
+        axios.get(`${this.url}/items/${id}`)
+          .then((response) => {
+            this.product = response.data
+            this.dialogCart = true
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      },
+      showDetail(id) {
+        axios.get(`${this.url}/items/${id}`)
+          .then((response) => {
+            this.product = response.data
+            this.dialog = true
+          })
+          .catch((error) => {
+            console.log(error);
+          })
       },
       getProducts() {
         axios.get(`${this.url}/items/`)
@@ -166,7 +194,8 @@
           })
       },
 
-      addToCart(productId) {
+      addToCart(productId, name) {
+        console.log(productId, name);
         let obj = {
           buyer: localStorage.getItem('id'),
           item: productId,
