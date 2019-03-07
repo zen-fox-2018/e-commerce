@@ -58,7 +58,7 @@ export default {
     return {
       isLogin: false,
       isAdmin: false,
-      url: 'http://localhost:3000',
+      url: 'https://51kards-server.patriagani.site',
     }
   },
   methods: {

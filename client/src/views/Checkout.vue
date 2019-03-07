@@ -5,7 +5,7 @@
       <h1>Checkout Order</h1>
       </center>
       <br>
-      <div>
+      <div v-if="carts.length !== 0">
         <v-card>
           <v-container fluid grid-list-lg>
             <v-layout v-for="item in itemsBought" row wrap>
@@ -81,6 +81,11 @@
           </v-form>
         </center>
         <br><br>
+      </div>
+      <div v-if="carts.length == 0">
+        <center>
+          <h2>Your cart is empty</h2>
+        </center>
       </div>
     </v-container>
   </div>
