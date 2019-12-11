@@ -1,6 +1,4 @@
 # e-commerce
-
-link deploy = ecommerce-h8.ribka.online
 ### Below are the URLs and the operations associated with them.
 ---
 | Method | URL | Description | Parameter | 
