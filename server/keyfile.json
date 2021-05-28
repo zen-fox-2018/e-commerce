@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "kinetic-axle-223715",
+  "private_key_id": "6c26f7a52ddb16a2ceaad70ef30fa788cc520e1e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3rXCGcCJoz2N8\nCyE6Um+zZ8EU9sgk5d+ywreWGIABS03iVa/QPFYVoSbo7UR3jB73/BrF3mooNzMX\nGblrOQboXNanzp6i/FHhxYOKIDiNQ4S9NdgSbzdaFf35jHeQvREX/EUcPlPmO508\nFSr1FyuLjf81PU6nSRFaj4ikbRuFYPUNBtzP+9S1wPv9ejDx8NGXq1n1QjWCV9Qy\nowph/xa1L3mSUQt2BYupjuanmEcNodA5B48a5HUE03rMNX0eudzHzeZ/XTKSMff7\nSDdyugvFt0X7nupMcFvsjIyKu+DeB0EnXgsSzWf9yO3vhFRpd6+2ksgC50KpXt7p\n3Z2iKT1BAgMBAAECggEAAzf66IExKivlsPYXN8jbaB37pULWkqZ0VUMqIUtGPXeQ\nyqRAoaYYBlahylvDixKBlawFWlWtn60pdBh9XkCUY1iiopPJZf7kzq910NMkGI4g\nBqqJkfeg1T9cyS1l6Dt27+gZ3C8HrHl7lbKjg0Jb3wz+xZOgo+fw8djBbsuya3O2\nF+Qm8qGXLJLW1FaTjn6dF7T1rj0StHtwhqTO+8BcCa7OEFyL9TclGMswRCqaMWDn\n1kOSSKvxEPM5Hmt0T3HhsZH+fmAPupOVPQwSa8V1MfYujLPqXQRtsTohm/ZiPdLi\nlFVI8ZueoWANnoNtFvwBuCx5iUfr3RVkAcoFjz/EUQKBgQDblOBKH/ix6r3ef3bx\n9crVq0vdvM88hV/iTGY/oeNGeBAhd1g7b1pUjH50B/sGc636zlrn/cn0gloo1ctH\nsJfTl7mVCROIYUEvxMqZe/cqzx9pXQhaZ1Qn6p2A5hu27mAISQgZtyb69z16CvJg\n2opZtG3xVEdlvNwznKDZ4rBhkQKBgQDWJCDB6NUM8F/wDGP8OJbQSV8Fz23YI1/n\nSuCMRB8JcquR+DNv0rUe+BvYO9zehklT82xYmDnPUbB2I9EZzDbuS7+KtbUuuSAx\nKUic7RPjAFhbe1yo9ap8R6IJxOvohWTJyDM/BlgsL/ORTWXq1DeW+YhO0PZZKwlC\nerDku/VIsQKBgGRZypM1v1OYQ0OvHy3/Nb6mtVpWEqPHFIX4gnYsRxEKh9yzjShE\ngJTJTHU8vHU7YtSPgC4r5yMOe6PT6T4PL6Ps4EyDRGD8iW0KU8kHRXNUCzf843dl\nZ6mCaI7jGuFkWZEPx1rxQChL29WtsQ2gcsACXIiBCswtHrmbqEtLdW5xAoGBAMAH\nseBx/OwXetD3K4p47LVntnCtbOGQB2aQfQEL7ZE5ZaYGn4m9uHJHKCEmvZBHd+Zy\nukxQZjcGGGo5AEBUI0ZaYy/udsWpebbcQKOI7nZ4TsPqwlM5ymKckjCUiMEBLjrM\n7zerZtJpRdCdSbHmENuwdY3IUcHwl+Mnxw23h+RhAoGAK+LbjbEiI5CCNDafpyCP\nzf2o6hsgFo7dJwYVUoJ0T+XU7//hXkrFOAP6TWRRPWrjBVg99DbYU4zzOWVzFIPJ\nLEVi6XMkBlUVEF5IgjgsJMuN4wC7jaCjMu5w6WRAa4/anhIM9zCINc40FbjBNaDU\nPPKzbuZnd6/d7LtxG1R6RTg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "upload-file@kinetic-axle-223715.iam.gserviceaccount.com",
+  "client_id": "104083870104887049900",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/upload-file%40kinetic-axle-223715.iam.gserviceaccount.com"
+}
